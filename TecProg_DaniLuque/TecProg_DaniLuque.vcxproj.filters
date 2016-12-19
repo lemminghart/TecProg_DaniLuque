@@ -81,6 +81,9 @@
     <ClInclude Include="Scene_Dif_Selector.h">
       <Filter>Model\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Scene_Playing.h">
+      <Filter>Model\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameScene.cpp">
@@ -94,6 +97,9 @@
       <Filter>Model\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Scene_Dif_Selector.cpp">
+      <Filter>Model\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene_Playing.cpp">
       <Filter>Model\Scenes</Filter>
     </ClCompile>
   </ItemGroup>

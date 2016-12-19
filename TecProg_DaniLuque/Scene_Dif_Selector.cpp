@@ -2,6 +2,7 @@
 #include "System.hh"
 #include "Logger.hh"
 #include "Scene_Dif_Selector.h"
+#include "Scene_Playing.h"
 #include "GameMenu.hh"
 #pragma region TODO
 
@@ -42,7 +43,7 @@ void DifSelector::Update(void) {
 
 		if (mouseCoords.x > 347 && mouseCoords.x < 455 && mouseCoords.y > 100 && mouseCoords.y < 135) {
 			Println("EASY");
-			//SM.SetCurScene <GameScene>();
+			SM.SetCurScene <GamePlaying>();
 		}
 		if (mouseCoords.x > 320 && mouseCoords.x < 480 && mouseCoords.y > 222 && mouseCoords.y < 254) {
 			Println("MEDIUM");

@@ -2,6 +2,7 @@
 #include "System.hh"
 #include "Logger.hh"
 #include "Scene_Playing.h"
+#include "Scene_Dif_Selector.h"
 #include "GameMenu.hh"
 #pragma region TODO
 
@@ -20,6 +21,18 @@ GamePlaying::~GamePlaying(void) {
 }
 
 void GamePlaying::OnEntry(void) {
+	switch (DifSelector::gameDifficulty) {
+	case EASY:
+		std::cout << "CARGAR NIVEL FACIL" << std::endl;
+		//Cargar aqui los datos de la dificultad
+		break;
+	case MEDIUM:
+		std::cout << "CARGAR NIVEL MEDIO" << std::endl;
+		break;
+	case HARD:
+		std::cout << "CARGAR NIVEL DIFICL" << std::endl;
+		break;
+	}
 }
 
 void GamePlaying::OnExit(void) {

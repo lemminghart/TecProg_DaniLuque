@@ -12,6 +12,7 @@
 #include "GameMenu.hh"
 #include "GameScene.h"
 #include "Scene_Dif_Selector.h"
+#include "Scene_Playing.h"
 #pragma endregion TODO
 
 //! Initializes game needs and controls the game loop
@@ -29,6 +30,7 @@ namespace GameEngine {
 		SM.AddScene<GameMenu>();
 		SM.AddScene<GameScene>();
 		SM.AddScene<DifSelector>();
+		SM.AddScene<GamePlaying>();
 		SM.SetCurScene<GameMenu>();
 	
 		

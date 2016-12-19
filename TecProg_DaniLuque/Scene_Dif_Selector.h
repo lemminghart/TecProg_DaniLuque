@@ -3,6 +3,12 @@
 #include "Scene.hh"
 #include "GameScene.h"
 
+enum GameDifficulty {
+	EASY = 1,
+	MEDIUM = 2,
+	HARD = 3
+};
+
 // GameScene class with the selection mode
 class DifSelector : public Scene {
 public:
@@ -12,6 +18,7 @@ public:
 	void OnExit(void) override;
 	void Update(void) override;
 	void Draw(void) override;
+	static int gameDifficulty;
 private:
 	//Grid m_grid;
 	Sprite m_background;

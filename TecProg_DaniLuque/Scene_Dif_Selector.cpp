@@ -13,6 +13,8 @@ using namespace Logger;
 #define CELL_WIDTH 80
 #define CELL_HEIGHT 80
 
+int DifSelector::gameDifficulty = 0;
+
 DifSelector::DifSelector(void) {
 	m_background = { { 0, 0, W.GetWidth(), W.GetHeight() }, ObjectID::BG_00 };
 }
@@ -43,15 +45,21 @@ void DifSelector::Update(void) {
 
 		if (mouseCoords.x > 347 && mouseCoords.x < 455 && mouseCoords.y > 100 && mouseCoords.y < 135) {
 			Println("EASY");
+			gameDifficulty = EASY;
 			SM.SetCurScene <GamePlaying>();
+
 		}
 		if (mouseCoords.x > 320 && mouseCoords.x < 480 && mouseCoords.y > 222 && mouseCoords.y < 254) {
 			Println("MEDIUM");
-			//SM.SetCurScene <GameScene>();
+			gameDifficulty = MEDIUM;
+			SM.SetCurScene <GamePlaying>();
+
 		}
 		if (mouseCoords.x > 343 && mouseCoords.x < 460 && mouseCoords.y > 340 && mouseCoords.y < 374) {
 			Println("HARD");
-			//SM.SetCurScene <GameScene>();
+			gameDifficulty = HARD;
+			SM.SetCurScene <GamePlaying>();
+
 		}
 		if (mouseCoords.x > 345 && mouseCoords.x < 460 && mouseCoords.y > 462 && mouseCoords.y < 495) {
 			Println("BACK");

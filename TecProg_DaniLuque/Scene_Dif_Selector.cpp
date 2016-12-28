@@ -4,6 +4,7 @@
 #include "Scene_Dif_Selector.h"
 #include "Scene_Playing.h"
 #include "GameMenu.hh"
+#include "IOManager.hh"
 #pragma region TODO
 
 
@@ -46,6 +47,11 @@ void DifSelector::Update(void) {
 		if (mouseCoords.x > 347 && mouseCoords.x < 455 && mouseCoords.y > 100 && mouseCoords.y < 135) {
 			Println("EASY");
 			gameDifficulty = EASY;
+
+			//std::string filename = "test.xml";
+			//IOManager::TestXML("cfg/test.xml");
+			IOManager::TestXML("test.xml");
+			
 			SM.SetCurScene <GamePlaying>();
 
 		}
@@ -73,6 +79,10 @@ void DifSelector::Update(void) {
 	if (IM.IsKeyHold<'a'>()) Println("a hold");
 	if (IM.IsKeyDown<'0'>()) Println("0 down");
 	if (IM.IsKeyUp<KEY_BUTTON_DOWN>()) Println("down arrow up");
+	if (IM.IsKeyUp<KEY_BUTTON_ESCAPE>()) {
+		Println("GOING BACK");
+		SM.SetCurScene <GameMenu>();
+	}
 }
 
 void DifSelector::Draw(void) {

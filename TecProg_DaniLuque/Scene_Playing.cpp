@@ -77,6 +77,10 @@ void GamePlaying::Update(void) {
 	if (IM.IsKeyHold<'a'>()) Println("a hold");
 	if (IM.IsKeyDown<'0'>()) Println("0 down");
 	if (IM.IsKeyUp<KEY_BUTTON_DOWN>()) Println("down arrow up");
+	if (IM.IsKeyUp<KEY_BUTTON_ESCAPE>()) {
+		Println("GOING BACK");
+		SM.SetCurScene <DifSelector>();
+	}
 }
 
 void GamePlaying::Draw(void) {

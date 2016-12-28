@@ -12,13 +12,15 @@
 #include "Logger.hh"
 #include "Assert.hh"
 #include "Resource.hh"
-//#include <XML/rapidxml_utils.hpp>
+#include "XML/rapidxml.hpp"
+#include "XML/rapidxml_utils.hpp"
+
 using namespace Logger;
 
 namespace IOManager {
 
 	// Base test function for XML purposes (TODO)
-	/*void TestXML(std::string &&filename) {
+	void TestXML(std::string &&filename) {
 		rapidxml::file<> xmlFile(RESOURCE_FILE(filename));
 		rapidxml::xml_document<> doc;
 		doc.parse<0>(xmlFile.data());
@@ -29,7 +31,16 @@ namespace IOManager {
 				  " - ",
 				  node->first_attribute("att2")->value());
 		}
-	}*/
+	}
+
+	//TestXML("level_1.xml");
+	/*
+	<impresora peso="50" type="blanc.negro">
+		<tinta>rj3847</tinta>
+	</impresora>
+
+	array=(a="z", b="x");
+	*/
 
 	// Loader function that takes level info for a grid
 	std::vector<std::vector<ObjectID>> LoadLevel(std::string &&filename, int &rows, int &cols) {

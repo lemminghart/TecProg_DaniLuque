@@ -29,7 +29,7 @@ enum FontStyle {
 class Renderer {
 	Renderer() {
 		//Create renderer for window
-		m_SDLRenderer = SDL_CreateRenderer(W(), -1, SDL_RENDERER_ACCELERATED);
+		m_SDLRenderer = SDL_CreateRenderer(W(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 		ASSERT(m_SDLRenderer != nullptr);
 		//Initialize renderer color
 		SDL_SetRenderDrawColor(m_SDLRenderer, 255, 255, 255, 255);

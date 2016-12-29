@@ -20,7 +20,7 @@ using namespace Logger;
 namespace IOManager {
 
 	// Base test function for XML purposes (TODO)
-	void TestXML(std::string &&filename) {
+	static void TestXML(std::string &&filename) {
 		rapidxml::file<> xmlFile(RESOURCE_FILE(filename));
 		rapidxml::xml_document<> doc;
 		doc.parse<0>(xmlFile.data());
@@ -43,7 +43,7 @@ namespace IOManager {
 	*/
 
 	// Loader function that takes level info for a grid
-	std::vector<std::vector<ObjectID>> LoadLevel(std::string &&filename, int &rows, int &cols) {
+	static std::vector<std::vector<ObjectID>> LoadLevel(std::string &&filename, int &rows, int &cols) {
 		std::ifstream fileData(RESOURCE_FILE(filename));
 		ASSERT(fileData.good());
 		std::vector<std::vector<ObjectID>> lvlData;

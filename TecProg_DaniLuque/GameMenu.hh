@@ -5,7 +5,6 @@
 ******************************************************************/
 
 #pragma once
-#include "Grid.hh"
 #include "Scene.hh"
 #include "GameScene.h"
 

@@ -4,7 +4,6 @@
 #include "Scene_Dif_Selector.h"
 #include "Scene_Playing.h"
 #include "GameMenu.hh"
-#include "IOManager.hh"
 #pragma region TODO
 
 
@@ -28,7 +27,7 @@ void DifSelector::OnEntry(void) {
 
 void DifSelector::OnExit(void) {
 
-	Println("LEAVING_DIF_SELECTOR");
+//	Println("LEAVING_DIF_SELECTOR");
 //	IM.SetQuit();
 
 
@@ -47,11 +46,6 @@ void DifSelector::Update(void) {
 		if (mouseCoords.x > 347 && mouseCoords.x < 455 && mouseCoords.y > 100 && mouseCoords.y < 135) {
 			Println("EASY");
 			gameDifficulty = EASY;
-
-			//std::string filename = "test.xml";
-			//IOManager::TestXML("cfg/test.xml");
-			IOManager::TestXML("test.xml");
-			
 			SM.SetCurScene <GamePlaying>();
 
 		}

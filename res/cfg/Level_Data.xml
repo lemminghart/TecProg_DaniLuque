@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document>
+	<easy>
+		<rows>50</rows>
+		<columns>50</columns>
+		<time>400</time>
+		<VInit>1</Vinit>
+		<NumFoodInit>5</NumFoodInit>
+		<NumFoodIncr>1</NumFoodIncr>
+	</easy>
+	<medium>
+		<rows>20</rows>
+		<columns>20</columns>
+		<time>300</time>
+		<VInit>2</Vinit>
+		<NumFoodInit>10</NumFoodInit>
+		<NumFoodIncr>2</NumFoodIncr>
+	</medium>
+	<hard>
+		<rows>10</rows>
+		<columns>10</columns>
+		<time>100</time>
+		<VInit>3</Vinit>
+		<NumFoodInit>15</NumFoodInit>
+		<NumFoodIncr>4</NumFoodIncr>
+	</hard>  
+</document>
+
+<!-- <document>
+	<easy rows="50" columns="50" time="400" VInit="1" NumFoodInit="5" NumFoodIncr="1"/>
+	<medium rows="20" columns="20" time="300" VInit="2" NumFoodInit="10" NumFoodIncr="2"/> 
+	<hard rows="10" columns="10" time="100" VInit="3" NumFoodInit="15" NumFoodIncr="4"/>   
+</document> -->
+
+
+<!-- <document>
+   <easy>
+		<speed v=3/>
+		<speed v=3/>
+   </easy>
+   <medium>
+		<speed v=6/>
+   </medium>
+   <hard>
+		<speed v=9/>
+   </hard>
+</document> -->
+

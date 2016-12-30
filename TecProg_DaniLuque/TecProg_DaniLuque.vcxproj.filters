@@ -16,6 +16,9 @@
     <Filter Include="Model\Scenes">
       <UniqueIdentifier>{a653eaf7-7389-4ccc-971f-65c0f8607b71}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Model\Game Objects">
+      <UniqueIdentifier>{90336d24-92e1-48c8-8fc0-d2f68e8f7e66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assert.hh">
@@ -28,9 +31,6 @@
       <Filter>Controller</Filter>
     </ClInclude>
     <ClInclude Include="GameScene.h">
-      <Filter>Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Grid.hh">
       <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="GUI.hh">
@@ -87,9 +87,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameScene.cpp">
-      <Filter>Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Grid.cc">
       <Filter>Model</Filter>
     </ClCompile>
     <ClCompile Include="main.cc" />

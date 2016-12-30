@@ -119,7 +119,6 @@
     <ClInclude Include="GameEngine.hh" />
     <ClInclude Include="GameMenu.hh" />
     <ClInclude Include="GameScene.h" />
-    <ClInclude Include="Grid.hh" />
     <ClInclude Include="GUI.hh" />
     <ClInclude Include="ID.hh" />
     <ClInclude Include="InputManager.hh" />
@@ -140,7 +139,6 @@
   <ItemGroup>
     <ClCompile Include="GameMenu.cc" />
     <ClCompile Include="GameScene.cpp" />
-    <ClCompile Include="Grid.cc" />
     <ClCompile Include="main.cc" />
     <ClCompile Include="Scene_Dif_Selector.cpp" />
     <ClCompile Include="Scene_Playing.cpp" />

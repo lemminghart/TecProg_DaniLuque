@@ -14,13 +14,14 @@
 #include "Resource.hh"
 #include "XML/rapidxml.hpp"
 #include "XML/rapidxml_utils.hpp"
+#include "Scene_Dif_Selector.h"
 
 using namespace Logger;
 
 namespace IOManager {
 
 	// Base test function for XML purposes (TODO)
-	static void TestXML(std::string &&filename) {
+	/*static void LoadLevel(std::string &&filename) {
 		rapidxml::file<> xmlFile(RESOURCE_FILE(filename));
 		rapidxml::xml_document<> doc;
 		doc.parse<0>(xmlFile.data());
@@ -31,7 +32,68 @@ namespace IOManager {
 				  " - ",
 				  node->first_attribute("att2")->value());
 		}
+	}*/
+
+	//Function that shows the content of the LEVEL XML file
+	static void PrintData(rapidxml::xml_node<> * parent_node) {
+		//prints the content of the selected level
+		for (rapidxml::xml_node<> *node_I = parent_node->first_node(); node_I; node_I = node_I->next_sibling()) {
+			std::cout << node_I->name() << " : " << node_I->value() << "\n";
+		}
 	}
+
+	static void AssignData(rapidxml::xml_node<> * node) {
+		
+			//Rows: 
+		int rows = atoi(node->first_node("rows")->value());
+			//Columns: 
+		int columns = atoi(node->first_node("columns")->value());
+			//Time:
+		int time = atoi(node->first_node("time")->value());
+			//Initial snake speed: 
+		int VInit = atoi(node->first_node("VInit")->value());
+			//Initial food:
+		int NumFoodInit = atoi(node->first_node("NumFoodInit")->value());
+			//Food increment:
+		int NumFoodIncr = atoi(node->first_node("NumFoodIncr")->value());
+		
+		Println(rows, " : ", columns, " : ", time, " : ", VInit, " : ", NumFoodInit, " : ", NumFoodIncr);
+		std::cout << "Values properly assigned" << std::endl;
+		
+	}
+
+
+	// Function for loading the level data
+	static void LoadLevelData(std::string &&filename, GameDifficulty Difficulty) {
+		rapidxml::file<> xmlFile(RESOURCE_FILE(filename));
+		rapidxml::xml_document<> doc;
+		doc.parse<0>(xmlFile.data());
+		rapidxml::xml_node<> *root_node = doc.first_node("document");
+		rapidxml::xml_node<> * node;
+		switch (Difficulty) {
+			case GameDifficulty::EASY:
+				node = root_node->first_node("easy");
+				PrintData(node);
+				AssignData(node);
+				break;
+			case GameDifficulty::MEDIUM:
+				node = root_node->first_node("medium");
+				PrintData(node);
+				AssignData(node);
+				break;
+			case GameDifficulty::HARD:
+				node = root_node->first_node("hard");
+				PrintData(node);
+				AssignData(node);
+				break;
+			}
+		
+	}
+	
+
+
+		//rows="50" columns="50" time="400" VInit="1" NumFoodInit="5" NumFoodIncr="1"
+
 
 	//TestXML("level_1.xml");
 	/*

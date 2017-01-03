@@ -16,5 +16,4 @@ private:
 	//Grid m_grid;
 	Sprite m_background;
 	int m_score{ 0 };
-	int *map[];
 };

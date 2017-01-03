@@ -26,11 +26,6 @@ void DifSelector::OnEntry(void) {
 }
 
 void DifSelector::OnExit(void) {
-
-//	Println("LEAVING_DIF_SELECTOR");
-//	IM.SetQuit();
-
-
 }
 
 void DifSelector::Update(void) {
@@ -68,15 +63,16 @@ void DifSelector::Update(void) {
 		}
 
 	}
+	if (IM.IsKeyUp<KEY_BUTTON_ESCAPE>()) {
+		Println("GOING BACK");
+		SM.SetCurScene <GameMenu>();
+	}
 
 	// Test InputManager key methods
 	if (IM.IsKeyHold<'a'>()) Println("a hold");
 	if (IM.IsKeyDown<'0'>()) Println("0 down");
 	if (IM.IsKeyUp<KEY_BUTTON_DOWN>()) Println("down arrow up");
-	if (IM.IsKeyUp<KEY_BUTTON_ESCAPE>()) {
-		Println("GOING BACK");
-		SM.SetCurScene <GameMenu>();
-	}
+	
 }
 
 void DifSelector::Draw(void) {

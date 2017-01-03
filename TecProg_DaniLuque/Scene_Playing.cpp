@@ -5,6 +5,7 @@
 #include "Scene_Dif_Selector.h"
 #include "GameMenu.hh"
 #include "IOManager.hh"
+#include "Snake.h"
 #pragma region TODO
 
 
@@ -56,23 +57,6 @@ void GamePlaying::Update(void) {
 	else if (IM.IsMouseUp<MOUSE_BUTTON_LEFT>()) {
 		Println("mxn: ", IM.GetMouseCoords());
 
-		//if (mouseCoords.x > 347 && mouseCoords.x < 455 && mouseCoords.y > 100 && mouseCoords.y < 135) {
-		//	Println("EASY");
-		//	//SM.SetCurScene <GameScene>();
-		//}
-		//if (mouseCoords.x > 320 && mouseCoords.x < 480 && mouseCoords.y > 222 && mouseCoords.y < 254) {
-		//	Println("MEDIUM");
-		//	//SM.SetCurScene <GameScene>();
-		//}
-		//if (mouseCoords.x > 343 && mouseCoords.x < 460 && mouseCoords.y > 340 && mouseCoords.y < 374) {
-		//	Println("HARD");
-		//	//SM.SetCurScene <GameScene>();
-		//}
-		//if (mouseCoords.x > 345 && mouseCoords.x < 460 && mouseCoords.y > 462 && mouseCoords.y < 495) {
-		//	Println("BACK");
-		//	SM.SetCurScene <GameMenu>();
-		//	//GO BACK TO MAIN MENU
-		//}
 
 	}
 
@@ -84,6 +68,7 @@ void GamePlaying::Update(void) {
 		Println("GOING BACK");
 		SM.SetCurScene <DifSelector>();
 	}
+	
 }
 
 void GamePlaying::Draw(void) {

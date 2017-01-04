@@ -42,52 +42,53 @@ namespace IOManager {
 		}
 	}
 
-	static void AssignData(rapidxml::xml_node<> * node) {
+	static void AssignData(rapidxml::xml_node<> * node, LevelData &levelData) {
 		
 			//Rows: 
-		int rows = atoi(node->first_node("rows")->value());
+		levelData.rows = atoi(node->first_node("rows")->value());
 			//Columns: 
-		int columns = atoi(node->first_node("columns")->value());
+		levelData.columns = atoi(node->first_node("columns")->value());
 			//Time:
-		int time = atoi(node->first_node("time")->value());
+		levelData.time = atoi(node->first_node("time")->value());
 			//Initial snake speed: 
-		int VInit = atoi(node->first_node("VInit")->value());
+		levelData.VInit = atoi(node->first_node("VInit")->value());
 			//Initial food:
-		int NumFoodInit = atoi(node->first_node("NumFoodInit")->value());
+		levelData.NumFoodInit = atoi(node->first_node("NumFoodInit")->value());
 			//Food increment:
-		int NumFoodIncr = atoi(node->first_node("NumFoodIncr")->value());
+		levelData.NumFoodIncr = atoi(node->first_node("NumFoodIncr")->value());
 		
-		Println(rows, " : ", columns, " : ", time, " : ", VInit, " : ", NumFoodInit, " : ", NumFoodIncr);
+		Println(levelData.rows, " : ", levelData.columns, " : ", levelData.time, " : ", levelData.VInit,
+		" : ", levelData.NumFoodInit, " : ", levelData.NumFoodIncr);
 		std::cout << "Values properly assigned" << std::endl;
 		
 	}
 
 
 	// Function for loading the level data
-	static void LoadLevelData(std::string &&filename, GameDifficulty Difficulty) {
+	static LevelData LoadLevelData(std::string &&filename, GameDifficulty difficulty, LevelData &levelData) {
 		rapidxml::file<> xmlFile(RESOURCE_FILE(filename));
 		rapidxml::xml_document<> doc;
 		doc.parse<0>(xmlFile.data());
 		rapidxml::xml_node<> *root_node = doc.first_node("document");
 		rapidxml::xml_node<> * node;
-		switch (Difficulty) {
+		switch (difficulty) {
 			case GameDifficulty::EASY:
 				node = root_node->first_node("easy");
 				PrintData(node);
-				AssignData(node);
+				AssignData(node, levelData);
 				break;
 			case GameDifficulty::MEDIUM:
 				node = root_node->first_node("medium");
 				PrintData(node);
-				AssignData(node);
+				AssignData(node, levelData);
 				break;
 			case GameDifficulty::HARD:
 				node = root_node->first_node("hard");
 				PrintData(node);
-				AssignData(node);
+				AssignData(node, levelData);
 				break;
 			}
-		
+		return levelData;
 	}
 	
 

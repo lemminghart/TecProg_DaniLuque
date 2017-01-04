@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include <functional>
+
 #define TM TimeManager::Instance()
 class TimeManager {
 public:

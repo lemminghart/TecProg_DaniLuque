@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <document>
 	<easy>
-		<rows>50</rows>
-		<columns>50</columns>
+		<rows>20</rows>
+		<columns>25</columns>
 		<time>400</time>
 		<VInit>1</Vinit>
 		<NumFoodInit>5</NumFoodInit>
 		<NumFoodIncr>1</NumFoodIncr>
 	</easy>
 	<medium>
-		<rows>20</rows>
+		<rows>15</rows>
 		<columns>20</columns>
 		<time>300</time>
 		<VInit>2</Vinit>
@@ -18,7 +18,7 @@
 	</medium>
 	<hard>
 		<rows>10</rows>
-		<columns>10</columns>
+		<columns>15</columns>
 		<time>100</time>
 		<VInit>3</Vinit>
 		<NumFoodInit>15</NumFoodInit>

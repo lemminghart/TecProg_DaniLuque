@@ -124,7 +124,6 @@
     <ClInclude Include="InputManager.hh" />
     <ClInclude Include="IOManager.hh" />
     <ClInclude Include="Logger.hh" />
-    <ClInclude Include="Map.h" />
     <ClInclude Include="Renderer.hh" />
     <ClInclude Include="Resource.hh" />
     <ClInclude Include="Scene.hh" />
@@ -142,7 +141,6 @@
     <ClCompile Include="GameMenu.cc" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="main.cc" />
-    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Scene_Dif_Selector.cpp" />
     <ClCompile Include="Scene_Playing.cpp" />
     <ClCompile Include="Snake.cpp" />

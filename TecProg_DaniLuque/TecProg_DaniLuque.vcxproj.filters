@@ -84,9 +84,6 @@
     <ClInclude Include="Scene_Playing.h">
       <Filter>Model\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>Model\Game Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Snake.h">
       <Filter>Model\Game Objects</Filter>
     </ClInclude>
@@ -104,9 +101,6 @@
     </ClCompile>
     <ClCompile Include="Scene_Playing.cpp">
       <Filter>Model\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>Model\Game Objects</Filter>
     </ClCompile>
     <ClCompile Include="Snake.cpp">
       <Filter>Model\Game Objects</Filter>

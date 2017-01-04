@@ -10,7 +10,7 @@ struct Position {
 // GameScene class with the menu
 class Snake{
 public:
-	Snake();
+	Snake(Position pos, int speed);
 	~Snake();
 	void Update(void);
 	void Draw(void);
@@ -24,9 +24,11 @@ public:
 	int GetScore(void);
 	int GetNumLives(void);
 	int GetBodySize(void);
+
+	struct S_Cell : public Sprite { Sprite content; } **cellData; // Cell structure to store its position, its texture and its content (wether is empty or not)
 private:
 	int lives;
 	int bodySize;
-	int score; //poner aqui o en mapa?
+	int s_speed;
 	Position position;
 };

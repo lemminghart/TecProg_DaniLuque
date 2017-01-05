@@ -5,7 +5,6 @@
 #include "Scene_Dif_Selector.h"
 #include "GameMenu.hh"
 #include "IOManager.hh"
-#include "Snake.h"
 #include "TimeManager.hh"
 #pragma region TODO
 
@@ -54,8 +53,9 @@ void GamePlaying::OnEntry(void) {
 	}
 
 	//inicializar serpiente
-	/*Position pos{ 5,5 };
-	Snake go_snake(pos, m_leveldata.VInit);*/
+
+	s_snake = new Snake(m_leveldata);
+
 
 }
 
@@ -74,7 +74,9 @@ void GamePlaying::Update(void) {
 		SM.SetCurScene <DifSelector>();
 	}
 
-	
+	//searches inputs
+	s_snake->Update();
+
 
 	//comprobar los vecinos de la cabeza de la serpiente
 
@@ -85,10 +87,10 @@ void GamePlaying::Update(void) {
 	//m_background = { { 0, 0, W.GetWidth(), W.GetHeight() }, ObjectID::BG_00 };
 
 
-	// Test InputManager key methods
-	if (IM.IsKeyHold<'a'>()) Println("a hold");
-	if (IM.IsKeyDown<'0'>()) Println("0 down");
-	if (IM.IsKeyUp<KEY_BUTTON_DOWN>()) Println("down arrow up");
+	//// Test InputManager key methods
+	//if (IM.IsKeyHold<'a'>()) Println("a hold");
+	//if (IM.IsKeyDown<'0'>()) Println("0 down");
+	//if (IM.IsKeyUp<KEY_BUTTON_DOWN>()) Println("down arrow up");
 	
 }
 
@@ -98,6 +100,10 @@ void GamePlaying::Draw(void) {
 	//GUI::DrawTextShaded<FontID::ARIAL>("HERE GOES THE GAME :)",
 	//{ W.GetWidth() >> 1, int(W.GetHeight()*.1f), 1, 1 },
 	//{ 0, 255, 0 }, { 0, 0, 0 });
+
+
+	cellData[s_snake->GetPosition().x][s_snake->GetPosition().y].objectID = ObjectID::SNAKE_HEAD;
+	ContentTransform(s_snake->GetPosition().x, s_snake->GetPosition().y) = cellData[s_snake->GetPosition().x][s_snake->GetPosition().y].transform;
 
 	for (int i = 0; i < m_leveldata.rows; ++i) for (int j = 0; j < m_leveldata.columns; ++j) cellData[i][j].Draw();
 

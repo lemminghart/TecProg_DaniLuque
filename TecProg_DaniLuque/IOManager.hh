@@ -105,26 +105,26 @@ namespace IOManager {
 	array=(a="z", b="x");
 	*/
 
-	// Loader function that takes level info for a grid
-	static std::vector<std::vector<ObjectID>> LoadLevel(std::string &&filename, int &rows, int &cols) {
-		std::ifstream fileData(RESOURCE_FILE(filename));
-		ASSERT(fileData.good());
-		std::vector<std::vector<ObjectID>> lvlData;
-		std::string line;
-		while (std::getline(fileData, line)) {
-			std::istringstream strData(std::move(line));
-			lvlData.emplace_back(std::istream_iterator<ObjectID>(std::move(strData)), std::istream_iterator<ObjectID>());
-		}
-		rows = int(lvlData.size()); cols = int(lvlData[0].size());
-		fileData.close();
-		#pragma region DEBUG_DATA
-			Println("Level: ", filename);
-			for (auto &r : lvlData) {
-				for (auto &c : r) Print(c, ' ');
-				Endln();
-			}
-		#pragma endregion
-		return std::move(lvlData);
-	}
+	//// Loader function that takes level info for a grid
+	//static std::vector<std::vector<ObjectID>> LoadLevel(std::string &&filename, int &rows, int &cols) {
+	//	std::ifstream fileData(RESOURCE_FILE(filename));
+	//	ASSERT(fileData.good());
+	//	std::vector<std::vector<ObjectID>> lvlData;
+	//	std::string line;
+	//	while (std::getline(fileData, line)) {
+	//		std::istringstream strData(std::move(line));
+	//		lvlData.emplace_back(std::istream_iterator<ObjectID>(std::move(strData)), std::istream_iterator<ObjectID>());
+	//	}
+	//	rows = int(lvlData.size()); cols = int(lvlData[0].size());
+	//	fileData.close();
+	//	#pragma region DEBUG_DATA
+	//		Println("Level: ", filename);
+	//		for (auto &r : lvlData) {
+	//			for (auto &c : r) Print(c, ' ');
+	//			Endln();
+	//		}
+	//	#pragma endregion
+	//	return std::move(lvlData);
+	//}
 
 }

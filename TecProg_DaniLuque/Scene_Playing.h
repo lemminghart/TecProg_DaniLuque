@@ -15,6 +15,8 @@ public:
 	void Update(void) override;
 	void Draw(void) override;
 
+	void RestartLevel(void);
+
 	LevelData m_leveldata;
 	Snake *s_snake;
 	Food *f_food;

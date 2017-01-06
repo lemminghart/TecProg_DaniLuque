@@ -25,8 +25,8 @@ Snake::Snake(LevelData &lvldata) {
 	s_score = 0;
 
 	s_direction = RIGHT;
-	position = { 5,5 };
-	lastPosition = { 4,4 };
+	s_position = { 5,5 };
+	s_lastPosition = { 4,4 };
 	
 }
 
@@ -64,7 +64,6 @@ void Snake::Update(void) {
 
 	//PONER EL GO AQUI PARA QUE AVANCE SOLA (SE TIENE QUE REGULAR ANTES EL FRAMERATE)
 	//Go();
-	
 
 }
 
@@ -82,12 +81,14 @@ void Snake::Go(void) {
 			break;
 		}
 		else if (CheckNeighbours()) {
-			lastPosition = position;
-			position.x += 1;
+			s_lastPosition = s_position;
+			s_position.x += 1;
 			Println("SNAKE DOWN");
 		}
 		else {
 			Println("MUERTE");
+			lives -= 1;
+			dead = true;
 		}
 		break;
 	case UP:
@@ -96,12 +97,14 @@ void Snake::Go(void) {
 			break;
 		}
 		else if (CheckNeighbours()) {
-			lastPosition = position;
-			position.x -= 1;
+			s_lastPosition = s_position;
+			s_position.x -= 1;
 			Println("SNAKE UP");
 		}
 		else {
 			Println("MUERTE");
+			lives -= 1;
+			dead = true;
 		}
 		break;
 	case LEFT:
@@ -110,12 +113,14 @@ void Snake::Go(void) {
 			break;
 		}
 		else if (CheckNeighbours()) {
-			lastPosition = position;
-			position.y -= 1;
+			s_lastPosition = s_position;
+			s_position.y -= 1;
 			Println("SNAKE LEFT");
 		}
 		else {
 			Println("MUERTE");
+			lives -= 1;
+			dead = true;
 		}
 		break;
 	case RIGHT:
@@ -124,12 +129,14 @@ void Snake::Go(void) {
 			break;
 		}
 		else if (CheckNeighbours()) {
-			lastPosition = position;
-			position.y += 1;
+			s_lastPosition = s_position;
+			s_position.y += 1;
 			Println("SNAKE RIGHT");
 		}
 		else {
 			Println("MUERTE");
+			lives -= 1;
+			dead = true;
 		}
 		break;
 	default:
@@ -141,19 +148,19 @@ void Snake::Go(void) {
 bool Snake::CheckNeighbours(void) {
 	switch (s_direction) {
 	case DOWN:
-		if ((position.x + 1) > 0 && (position.x + 1) < (s_leveldata.rows - 1)) return true;
+		if ((s_position.x + 1) > 0 && (s_position.x + 1) < (s_leveldata.rows - 1)) return true;
 		else return false;
 		break;
 	case UP:
-		if ((position.x - 1) > 0 && (position.x - 1) < (s_leveldata.rows - 1)) return true;
+		if ((s_position.x - 1) > 0 && (s_position.x - 1) < (s_leveldata.rows - 1)) return true;
 		else return false;
 		break;
 	case LEFT:
-		if ((position.y - 1) > 0 && (position.y - 1) < (s_leveldata.columns - 1)) return true;
+		if ((s_position.y - 1) > 0 && (s_position.y - 1) < (s_leveldata.columns - 1)) return true;
 		else return false;
 		break;
 	case RIGHT:
-		if ((position.y + 1) > 0 && (position.y + 1) < (s_leveldata.columns - 1)) return true;
+		if ((s_position.y + 1) > 0 && (s_position.y + 1) < (s_leveldata.columns - 1)) return true;
 		else return false;
 		break;
 	default:
@@ -164,6 +171,14 @@ bool Snake::CheckNeighbours(void) {
 
 //SETTERS
 
+void Snake::SetPosition(Position pos) {
+	s_position = pos;
+}
+
+void Snake::SetLastPosition(Position pos) {
+	s_lastPosition = pos;
+}
+
 void Snake::SetDirection(Direction direction) {
 	s_direction = direction;
 }
@@ -172,6 +187,13 @@ void Snake::SetScore(int score) {
 	s_score = score;
 }
 
+void Snake::SetNumLives(int numLives) {
+	lives = numLives;
+}
+
+void Snake::SetDead(bool state) {
+	dead = state;
+}
 
 
 //GETTERS
@@ -181,13 +203,21 @@ Direction Snake::GetDirection() {
 }
 
 Position Snake::GetPosition() {
-	return position;
+	return s_position;
 }
 
 Position Snake::GetLastPosition() {
-	return lastPosition;
+	return s_lastPosition;
 }
 
 int Snake::GetScore() {
 	return s_score;
+}
+
+int Snake::GetNumLives() {
+	return lives;
+}
+
+bool Snake::GetDead() {
+	return dead;
 }

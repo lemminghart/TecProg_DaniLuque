@@ -32,11 +32,13 @@ public:
 	bool CheckNeighbours(void);
 
 	//setters & getters
-	void SetPosition(struct position);
+	void SetPosition(Position pos);
+	void SetLastPosition(Position pos);
 	void SetScore(int score);
 	void SetNumLives(int numLives);
 	void SetBodySize(int bodySize);
 	void SetDirection(Direction direction);
+	void SetDead(bool state);
 
 	Position GetPosition(void);
 	Position GetLastPosition(void);
@@ -44,6 +46,7 @@ public:
 	int GetNumLives(void);
 	int GetBodySize(void);
 	Direction GetDirection(void);
+	bool GetDead(void);
 
 	struct S_Cell : public Sprite { Sprite content; } **cellData; // Cell structure to store its position, its texture and its content (wether is empty or not)
 
@@ -54,8 +57,9 @@ private:
 	int bodySize;
 	int s_speed;
 	int s_score;
-	Position position;
-	Position lastPosition;
+	bool dead;
+	Position s_position;
+	Position s_lastPosition;
 
 	LevelData s_leveldata;
 

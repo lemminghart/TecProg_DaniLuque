@@ -17,8 +17,6 @@ using namespace Logger;
 
 GamePlaying::GamePlaying(void) {
 	m_background = { { 0, 0, W.GetWidth(), W.GetHeight() }, ObjectID::BG_00 };
-	foodcounter = 1;
-	score = 0;
 }
 
 GamePlaying::~GamePlaying(void) {
@@ -39,6 +37,9 @@ void GamePlaying::OnEntry(void) {
 		m_leveldata = IOManager::LoadLevelData("cfg/Level_Data.xml", HARD, m_leveldata);
 		break;
 	}
+	//inicializar variables
+	foodcounter = 1;
+	score = 0;
 
 	//inicializar el mapa
 	cellData = new Cell*[m_leveldata.rows];
@@ -49,7 +50,7 @@ void GamePlaying::OnEntry(void) {
 			cellData[i][j].transform = { j * (CELL_WIDTH + 2) + ((W.GetWidth() - CELL_WIDTH*m_leveldata.columns) >> 1),
 				i * (CELL_HEIGHT + 2) + ((W.GetHeight() - CELL_HEIGHT*m_leveldata.rows) >> 1),
 				CELL_WIDTH, CELL_HEIGHT };
-			if (i == 0 || j == 0 || i == (m_leveldata.rows-1) || j == (m_leveldata.columns-1)) {
+			if (i == 0 || j == 0 || i == (m_leveldata.rows - 1) || j == (m_leveldata.columns - 1)) {
 				cellData[i][j].objectID = ObjectID::CELL_WALL;
 			}
 			else {
@@ -59,23 +60,19 @@ void GamePlaying::OnEntry(void) {
 		}
 	}
 
-	//inicializar Game objects
-
+	//inicializar serpiente
 	s_snake = new Snake(m_leveldata);
+	//inicializar comida
 	f_food = new Food(m_leveldata, foodcounter);
-
 
 }
 
 void GamePlaying::OnExit(void) {
-
-	delete[] s_snake;
-	delete[] f_food;
+	delete s_snake;
+	delete f_food;
 
 	Println("LEAVING_GAME");
 	//	IM.SetQuit();
-
-
 }
 
 void GamePlaying::Update(void) {
@@ -85,13 +82,22 @@ void GamePlaying::Update(void) {
 		SM.SetCurScene <DifSelector>();
 	}
 	if (IM.IsKeyUp<'s'>()) {
-		Println("----------------GAMEDATA-----------\n", "Score: ", s_snake->GetScore());
+		Println("----------------GAMEDATA-----------\n", "Score: ", s_snake->GetScore(), "\n",
+			"Lives: ", s_snake->GetNumLives());
 	}
-
+	if (IM.IsKeyUp<'z'>()) {
+		Println("----------------RESTARTING LEVEL-----------\n");
+		RestartLevel();
+	}
 	
 
 	//update del snake (inputs i tal)
 	s_snake->Update();
+	
+	//Comprobar si la serpiente sigue viva
+	if (s_snake->GetDead()) { //take out 1 live
+		RestartLevel();
+	}
 
 	//check if snake eats food
 	if (s_snake->GetPosition().x == f_food->GetPosition().x && s_snake->GetPosition().y == f_food->GetPosition().y) {
@@ -130,4 +136,37 @@ void GamePlaying::Draw(void) {
 	//imprime el contenido de la matriz
 	for (int i = 0; i < m_leveldata.rows; ++i) for (int j = 0; j < m_leveldata.columns; ++j) cellData[i][j].Draw();
 
+}
+
+void GamePlaying::RestartLevel(void) {
+	if (s_snake->GetNumLives() > 0) {
+		//erase drawn sprites
+		for (int i = 0; i < m_leveldata.rows; ++i) {
+			for (int j = 0; j < m_leveldata.columns; ++j) {
+				if (i == 0 || j == 0 || i == (m_leveldata.rows - 1) || j == (m_leveldata.columns - 1)) {
+					cellData[i][j].objectID = ObjectID::CELL_WALL;
+				}
+				else {
+					cellData[i][j].objectID = ObjectID::CELL_EMPTY;
+				}
+			}
+		}
+		/*cellData[f_food->GetPosition().x][f_food->GetPosition().y].objectID = ObjectID::CELL_EMPTY;
+		cellData[s_snake->GetLastPosition().x][s_snake->GetLastPosition().y].objectID = ObjectID::CELL_EMPTY;*/
+
+		//restore initial parameters	
+		s_snake->SetScore(0);
+		s_snake->SetDirection(RIGHT);
+		s_snake->SetPosition({ 5,5 });
+		s_snake->SetLastPosition({ 4,4 });
+
+		//restore initial parameters
+		foodcounter = 1;
+		score = 0;
+		s_snake->SetDead(false);
+		//aqui va velocidad inicial snake
+	}
+	else { //snake is dead
+		SM.SetCurScene <DifSelector>();
+	}
 }

@@ -47,7 +47,12 @@ void GamePlaying::OnEntry(void) {
 			cellData[i][j].transform = { j * (CELL_WIDTH + 2) + ((W.GetWidth() - CELL_WIDTH*m_leveldata.columns) >> 1),
 				i * (CELL_HEIGHT + 2) + ((W.GetHeight() - CELL_HEIGHT*m_leveldata.rows) >> 1),
 				CELL_WIDTH, CELL_HEIGHT };
-			cellData[i][j].objectID = ObjectID::CELL_EMPTY;
+			if (i == 0 || j == 0 || i == (m_leveldata.rows-1) || j == (m_leveldata.columns-1)) {
+				cellData[i][j].objectID = ObjectID::CELL_WALL;
+			}
+			else {
+				cellData[i][j].objectID = ObjectID::CELL_EMPTY;
+			}
 			ContentTransform(i, j) = cellData[i][j].transform;
 		}
 	}
@@ -73,14 +78,15 @@ void GamePlaying::Update(void) {
 		Println("GOING BACK");
 		SM.SetCurScene <DifSelector>();
 	}
+	if (IM.IsKeyUp<'s'>()) {
+		Println("----------------GAMEDATA-----------\n", "Score: ", s_snake->GetScore());
+	}
 
-	//searches inputs
+	
+
+	//update del snake (inputs i tal)
 	s_snake->Update();
 
-
-	//comprobar los vecinos de la cabeza de la serpiente
-
-	//mirar si hay cambio de dirección
 
 	//mover: consecuencias (avanza, come fruta, muere)
 
@@ -96,15 +102,16 @@ void GamePlaying::Update(void) {
 
 void GamePlaying::Draw(void) {
 	m_background.Draw();
+	
 
-	//GUI::DrawTextShaded<FontID::ARIAL>("HERE GOES THE GAME :)",
-	//{ W.GetWidth() >> 1, int(W.GetHeight()*.1f), 1, 1 },
-	//{ 0, 255, 0 }, { 0, 0, 0 });
-
-
+	//pinta la cabeza de la serpiente
 	cellData[s_snake->GetPosition().x][s_snake->GetPosition().y].objectID = ObjectID::SNAKE_HEAD;
-	ContentTransform(s_snake->GetPosition().x, s_snake->GetPosition().y) = cellData[s_snake->GetPosition().x][s_snake->GetPosition().y].transform;
 
+	//limpia la ultima posición de la serpiente
+	cellData[s_snake->GetLastPosition().x][s_snake->GetLastPosition().y].objectID = ObjectID::CELL_EMPTY;
+	//ContentTransform(s_snake->GetPosition().x, s_snake->GetPosition().y) = cellData[s_snake->GetPosition().x][s_snake->GetPosition().y].transform;
+
+	//imprime el contenido de la matriz
 	for (int i = 0; i < m_leveldata.rows; ++i) for (int j = 0; j < m_leveldata.columns; ++j) cellData[i][j].Draw();
 
 }

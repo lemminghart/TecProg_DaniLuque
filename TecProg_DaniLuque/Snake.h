@@ -26,7 +26,7 @@ public:
 	Snake(LevelData &lvldata);
 	~Snake();
 	void Update(void);
-	void Draw(void);
+	void Draw();
 	
 	void Go(void);
 	bool CheckNeighbours(void);
@@ -39,6 +39,7 @@ public:
 	void SetDirection(Direction direction);
 
 	Position GetPosition(void);
+	Position GetLastPosition(void);
 	int GetScore(void);
 	int GetNumLives(void);
 	int GetBodySize(void);
@@ -48,10 +49,13 @@ public:
 
 private:
 	Direction s_direction;
+	Direction s_lastDirection;
 	int lives;
 	int bodySize;
 	int s_speed;
+	int s_score;
 	Position position;
+	Position lastPosition;
 
 	LevelData s_leveldata;
 

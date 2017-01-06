@@ -19,11 +19,14 @@ Snake::Snake() {
 
 Snake::Snake(LevelData &lvldata) {
 	s_leveldata = lvldata;
+
 	lives = 3;
 	bodySize = 0;
+	s_score = 0;
 
 	s_direction = RIGHT;
 	position = { 5,5 };
+	lastPosition = { 4,4 };
 	
 }
 
@@ -37,26 +40,27 @@ void Snake::Update(void) {
 	if (IM.IsKeyHold<'l'>()) Println("SNAKE VIVE!");
 
 	if (IM.IsKeyUp<KEY_BUTTON_DOWN>()) {
+		s_lastDirection = s_direction;
 		s_direction = DOWN;
-		Println("SNAKE DOWN");
 		Go();
 	}
 	if (IM.IsKeyUp<KEY_BUTTON_UP>()) {
+		s_lastDirection = s_direction;
 		s_direction = UP;
-		Println("SNAKE UP");
 		Go();
 	}
 	if (IM.IsKeyUp<KEY_BUTTON_LEFT>()){
+		s_lastDirection = s_direction;
 		s_direction = LEFT;
-		Println("SNAKE LEFT");
 		Go();
 	}
 	if (IM.IsKeyUp<KEY_BUTTON_RIGHT>()){
+		s_lastDirection = s_direction;
 		s_direction = RIGHT;
-		Println("SNAKE RIGHT");
 		Go();
 	}
-
+	//PONER EL GO AQUI PARA QUE AVANCE SOLA (SE TIENE QUE REGULAR ANTES EL FRAMERATE)
+	//Go();
 	
 
 }
@@ -70,49 +74,88 @@ void Snake::Draw(void) {
 void Snake::Go(void) {
 	switch (s_direction) {
 	case DOWN:
-		if (CheckNeighbours()) {
+		if (s_lastDirection == UP) {
+			s_direction = s_lastDirection;
+			break;
+		}
+		else if (CheckNeighbours()) {
+			lastPosition = position;
 			position.x += 1;
+			Println("SNAKE DOWN");
 		}
 		else {
-			Println("ALGO NO VA BIEN");
+			Println("MUERTE");
 		}
 		break;
 	case UP:
-		if (CheckNeighbours()) {
+		if (s_lastDirection == DOWN) {
+			s_direction = s_lastDirection;
+			break;
+		}
+		else if (CheckNeighbours()) {
+			lastPosition = position;
 			position.x -= 1;
+			Println("SNAKE UP");
 		}
 		else {
-			Println("ALGO NO VA BIEN");
+			Println("MUERTE");
 		}
 		break;
 	case LEFT:
-		if (CheckNeighbours()) {
+		if (s_lastDirection == RIGHT) {
+			s_direction = s_lastDirection;
+			break;
+		}
+		else if (CheckNeighbours()) {
+			lastPosition = position;
 			position.y -= 1;
+			Println("SNAKE LEFT");
 		}
 		else {
-			Println("ALGO NO VA BIEN");
+			Println("MUERTE");
 		}
 		break;
 	case RIGHT:
-		if (CheckNeighbours()) {
+		if (s_lastDirection == LEFT) {
+			s_direction = s_lastDirection;
+			break;
+		}
+		else if (CheckNeighbours()) {
+			lastPosition = position;
 			position.y += 1;
+			Println("SNAKE RIGHT");
 		}
 		else {
-			Println("ALGO NO VA BIEN");
+			Println("MUERTE");
 		}
 		break;
 	default:
-		Println("---------SOMETHING ISN'T GOING WELL-----------");
+		Println("---------SWITCH GO FAIL-----------");
 		break;
 	}
 }
 
 bool Snake::CheckNeighbours(void) {
-	if (position.x >= 1 && position.x <= (s_leveldata.columns - 1) && position.y >= 1 && position.y <= (s_leveldata.rows - 1)) {
-		return true; //puede moverse a una posición permitida
-	}
-	else {
-		return false; //se está intentando mover a una posición prohibida
+	switch (s_direction) {
+	case DOWN:
+		if ((position.x + 1) > 0 && (position.x + 1) < (s_leveldata.rows - 1)) return true;
+		else return false;
+		break;
+	case UP:
+		if ((position.x - 1) > 0 && (position.x - 1) < (s_leveldata.rows - 1)) return true;
+		else return false;
+		break;
+	case LEFT:
+		if ((position.y - 1) > 0 && (position.y - 1) < (s_leveldata.columns - 1)) return true;
+		else return false;
+		break;
+	case RIGHT:
+		if ((position.y + 1) > 0 && (position.y + 1) < (s_leveldata.columns - 1)) return true;
+		else return false;
+		break;
+	default:
+		Println("---------SWITCH CHECKNEIGHBOURS FAIL-----------");
+		break;
 	}
 }
 
@@ -122,6 +165,12 @@ void Snake::SetDirection(Direction direction) {
 	s_direction = direction;
 }
 
+void Snake::SetScore(int score) {
+	s_score = score;
+}
+
+
+
 //GETTERS
 
 Direction Snake::GetDirection() {
@@ -130,4 +179,12 @@ Direction Snake::GetDirection() {
 
 Position Snake::GetPosition() {
 	return position;
+}
+
+Position Snake::GetLastPosition() {
+	return lastPosition;
+}
+
+int Snake::GetScore() {
+	return s_score;
 }

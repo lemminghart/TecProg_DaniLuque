@@ -18,7 +18,6 @@ public:
 	Snake *s_snake;
 private:
 	Sprite m_background;
-	//int m_score{ 0 };
 
 	struct Cell : public Sprite { Sprite content; } **cellData; // Cell structure to store its position, its texture and its content (wether is empty or not)
 	inline ObjectID &ContentID(int i, int j) const { return cellData[i][j].content.objectID; }

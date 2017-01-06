@@ -11,7 +11,7 @@
 enum class ObjectID : const int {
 	SNAKE_HEAD, SNAKE_BODY, SNAKE_TAIL, // Snake IDs
 	FOOD_APPLE, // Food IDs
-	CELL_EMPTY, // Cell IDs
+	CELL_EMPTY, CELL_WALL, // Cell IDs
 	BG_00  // Background IDs
 };
 inline std::ostream &operator<<(std::ostream &os, const ObjectID &id) { return os << int(id); };

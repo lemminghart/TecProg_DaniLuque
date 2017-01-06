@@ -59,6 +59,9 @@ void Snake::Update(void) {
 		s_direction = RIGHT;
 		Go();
 	}
+	
+	
+
 	//PONER EL GO AQUI PARA QUE AVANCE SOLA (SE TIENE QUE REGULAR ANTES EL FRAMERATE)
 	//Go();
 	

@@ -17,6 +17,8 @@ using namespace Logger;
 
 GamePlaying::GamePlaying(void) {
 	m_background = { { 0, 0, W.GetWidth(), W.GetHeight() }, ObjectID::BG_00 };
+	foodcounter = 1;
+	score = 0;
 }
 
 GamePlaying::~GamePlaying(void) {
@@ -57,14 +59,18 @@ void GamePlaying::OnEntry(void) {
 		}
 	}
 
-	//inicializar serpiente
+	//inicializar Game objects
 
 	s_snake = new Snake(m_leveldata);
+	f_food = new Food(m_leveldata, foodcounter);
 
 
 }
 
 void GamePlaying::OnExit(void) {
+
+	delete[] s_snake;
+	delete[] f_food;
 
 	Println("LEAVING_GAME");
 	//	IM.SetQuit();
@@ -87,6 +93,13 @@ void GamePlaying::Update(void) {
 	//update del snake (inputs i tal)
 	s_snake->Update();
 
+	//check if snake eats food
+	if (s_snake->GetPosition().x == f_food->GetPosition().x && s_snake->GetPosition().y == f_food->GetPosition().y) {
+		s_snake->SetScore(score += f_food->GetValue());
+		foodcounter++;
+		f_food->Spawn(*s_snake, foodcounter);
+		
+	}
 
 	//mover: consecuencias (avanza, come fruta, muere)
 
@@ -109,7 +122,10 @@ void GamePlaying::Draw(void) {
 
 	//limpia la ultima posición de la serpiente
 	cellData[s_snake->GetLastPosition().x][s_snake->GetLastPosition().y].objectID = ObjectID::CELL_EMPTY;
-	//ContentTransform(s_snake->GetPosition().x, s_snake->GetPosition().y) = cellData[s_snake->GetPosition().x][s_snake->GetPosition().y].transform;
+		//ContentTransform(s_snake->GetPosition().x, s_snake->GetPosition().y) = cellData[s_snake->GetPosition().x][s_snake->GetPosition().y].transform;
+
+	//pinta la comida en el mapa
+	cellData[f_food->GetPosition().x][f_food->GetPosition().y].objectID = ObjectID::FOOD_APPLE;
 
 	//imprime el contenido de la matriz
 	for (int i = 0; i < m_leveldata.rows; ++i) for (int j = 0; j < m_leveldata.columns; ++j) cellData[i][j].Draw();

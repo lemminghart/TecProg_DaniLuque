@@ -116,6 +116,7 @@
   <ItemGroup>
     <ClInclude Include="Assert.hh" />
     <ClInclude Include="Color.hh" />
+    <ClInclude Include="Food.h" />
     <ClInclude Include="GameEngine.hh" />
     <ClInclude Include="GameMenu.hh" />
     <ClInclude Include="GameScene.h" />
@@ -138,6 +139,7 @@
     <ClInclude Include="Window.hh" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Food.cpp" />
     <ClCompile Include="GameMenu.cc" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="main.cc" />

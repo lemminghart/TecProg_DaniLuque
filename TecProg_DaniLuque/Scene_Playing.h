@@ -1,9 +1,8 @@
 #pragma once
 #include "Scene.hh"
-#include "GameScene.h"
 #include "Snake.h"
 #include "Food.h"
-
+#include "GameMenu.hh"
 
 // GameScene class with the selection mode
 class GamePlaying : public Scene {
@@ -16,6 +15,8 @@ public:
 	void Draw(void) override;
 
 	void RestartLevel(void);
+
+	int *GD;
 
 	LevelData m_leveldata;
 	Snake *s_snake;

@@ -30,9 +30,6 @@
     <ClInclude Include="GameEngine.hh">
       <Filter>Controller</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>Model</Filter>
-    </ClInclude>
     <ClInclude Include="GUI.hh">
       <Filter>Model</Filter>
     </ClInclude>
@@ -95,9 +92,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameScene.cpp">
-      <Filter>Model</Filter>
-    </ClCompile>
     <ClCompile Include="main.cc" />
     <ClCompile Include="GameMenu.cc">
       <Filter>Model\Scenes</Filter>

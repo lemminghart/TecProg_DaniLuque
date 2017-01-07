@@ -119,7 +119,6 @@
     <ClInclude Include="Food.h" />
     <ClInclude Include="GameEngine.hh" />
     <ClInclude Include="GameMenu.hh" />
-    <ClInclude Include="GameScene.h" />
     <ClInclude Include="GUI.hh" />
     <ClInclude Include="ID.hh" />
     <ClInclude Include="InputManager.hh" />
@@ -142,7 +141,6 @@
   <ItemGroup>
     <ClCompile Include="Food.cpp" />
     <ClCompile Include="GameMenu.cc" />
-    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="main.cc" />
     <ClCompile Include="Scene_Dif_Selector.cpp" />
     <ClCompile Include="Scene_Playing.cpp" />

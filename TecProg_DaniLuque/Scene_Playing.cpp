@@ -2,7 +2,6 @@
 #include "System.hh"
 #include "Logger.hh"
 #include "Scene_Playing.h"
-#include "Scene_Dif_Selector.h"
 #include "GameMenu.hh"
 #include "IOManager.hh"
 #include "TimeManager.hh"
@@ -17,6 +16,7 @@ using namespace Logger;
 #define CELL_HEIGHT 20
 
 GamePlaying::GamePlaying(void) {
+	
 	m_background = { { 0, 0, W.GetWidth(), W.GetHeight() }, ObjectID::BG_00 };
 }
 
@@ -24,7 +24,7 @@ GamePlaying::~GamePlaying(void) {
 }
 
 void GamePlaying::OnEntry(void) {
-	switch (DifSelector::gameDifficulty) {
+	switch (*GD) {
 	case EASY:
 		std::cout << "CARGANDO NIVEL FACIL" << std::endl;
 		m_leveldata = IOManager::LoadLevelData("cfg/Level_Data.xml", EASY, m_leveldata);
@@ -80,7 +80,7 @@ void GamePlaying::Update(void) {
 
 	if (IM.IsKeyUp<KEY_BUTTON_ESCAPE>()) {
 		Println("GOING BACK");
-		SM.SetCurScene <DifSelector>();
+		SM.SetCurScene <GameMenu>();
 	}
 	if (IM.IsKeyUp<'s'>()) {
 		Println("----------------GAMEDATA-----------\n", "Score: ", s_snake->GetScore(), "\n",

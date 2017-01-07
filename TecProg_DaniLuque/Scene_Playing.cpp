@@ -6,6 +6,7 @@
 #include "GameMenu.hh"
 #include "IOManager.hh"
 #include "TimeManager.hh"
+#include "Scene_Ranking.h"
 #pragma region TODO
 
 
@@ -107,11 +108,6 @@ void GamePlaying::Update(void) {
 		
 	}
 
-	//mover: consecuencias (avanza, come fruta, muere)
-
-	//m_background = { { 0, 0, W.GetWidth(), W.GetHeight() }, ObjectID::BG_00 };
-
-
 	//// Test InputManager key methods
 	//if (IM.IsKeyHold<'a'>()) Println("a hold");
 	//if (IM.IsKeyDown<'0'>()) Println("0 down");
@@ -167,6 +163,6 @@ void GamePlaying::RestartLevel(void) {
 		//aqui va velocidad inicial snake
 	}
 	else { //snake is dead
-		SM.SetCurScene <DifSelector>();
+		SM.SetCurScene <Ranking>();
 	}
 }

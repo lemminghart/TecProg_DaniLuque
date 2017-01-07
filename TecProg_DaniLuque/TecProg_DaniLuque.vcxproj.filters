@@ -90,6 +90,9 @@
     <ClInclude Include="Food.h">
       <Filter>Model\Game Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Scene_Ranking.h">
+      <Filter>Model\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameScene.cpp">
@@ -110,6 +113,9 @@
     </ClCompile>
     <ClCompile Include="Food.cpp">
       <Filter>Model\Game Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene_Ranking.cpp">
+      <Filter>Model\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

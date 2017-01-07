@@ -131,6 +131,7 @@
     <ClInclude Include="SceneManager.hh" />
     <ClInclude Include="Scene_Dif_Selector.h" />
     <ClInclude Include="Scene_Playing.h" />
+    <ClInclude Include="Scene_Ranking.h" />
     <ClInclude Include="Snake.h" />
     <ClInclude Include="Sprite.hh" />
     <ClInclude Include="System.hh" />
@@ -145,6 +146,7 @@
     <ClCompile Include="main.cc" />
     <ClCompile Include="Scene_Dif_Selector.cpp" />
     <ClCompile Include="Scene_Playing.cpp" />
+    <ClCompile Include="Scene_Ranking.cpp" />
     <ClCompile Include="Snake.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -13,6 +13,7 @@
 #include "GameScene.h"
 #include "Scene_Dif_Selector.h"
 #include "Scene_Playing.h"
+#include "Scene_Ranking.h"
 #pragma endregion TODO
 
 //! Initializes game needs and controls the game loop
@@ -39,9 +40,9 @@ namespace GameEngine {
 		SM.AddScene<GameScene>();
 		SM.AddScene<DifSelector>();
 		SM.AddScene<GamePlaying>();
-		SM.SetCurScene<GameMenu>();
-	
+		SM.AddScene<Ranking>();
 		
+		SM.SetCurScene<GameMenu>();
 	}
 	/** 
 	 * Runs the game specifying the window's name and dimensions

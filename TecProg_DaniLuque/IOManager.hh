@@ -8,6 +8,7 @@
 #include "ID.hh"
 #include <fstream>
 #include <sstream>
+#include <ios>
 #include <iterator>
 #include "Logger.hh"
 #include "Assert.hh"
@@ -22,19 +23,22 @@ using namespace Logger;
 
 namespace IOManager {
 
-	// Base test function for XML purposes (TODO)
-	/*static void LoadLevel(std::string &&filename) {
-		rapidxml::file<> xmlFile(RESOURCE_FILE(filename));
-		rapidxml::xml_document<> doc;
-		doc.parse<0>(xmlFile.data());
-		rapidxml::xml_node<> *root_node = doc.first_node("document");
-		for (rapidxml::xml_node<> * node = root_node->first_node("node"); node; node = node->next_sibling()) {
-			Println("Node: ", 
-				  node->first_attribute("att1")->value(),
-				  " - ",
-				  node->first_attribute("att2")->value());
-		}
-	}*/
+	//swap 2 scores
+	static void Swap(Score &a, Score &b) {
+		Score t;
+		t = a;
+		a = b;
+		b = t;
+	}
+
+	static int CompareScore(int leftValue, int rightValue) {
+		if (leftValue < rightValue)
+			return 1;
+		if (leftValue > rightValue)
+			return -1;
+		return 0;
+	}
+
 
 	//Function that shows the content of the LEVEL XML file
 	static void PrintData(rapidxml::xml_node<> * parent_node) {
@@ -45,24 +49,24 @@ namespace IOManager {
 	}
 
 	static void AssignData(rapidxml::xml_node<> * node, LevelData &levelData) {
-		
-			//Rows: 
+
+		//Rows: 
 		levelData.rows = atoi(node->first_node("rows")->value());
-			//Columns: 
+		//Columns: 
 		levelData.columns = atoi(node->first_node("columns")->value());
-			//Time:
+		//Time:
 		levelData.time = atoi(node->first_node("time")->value());
-			//Initial snake speed: 
+		//Initial snake speed: 
 		levelData.VInit = atoi(node->first_node("VInit")->value());
-			//Initial food:
+		//Initial food:
 		levelData.NumFoodInit = atoi(node->first_node("NumFoodInit")->value());
-			//Food increment:
+		//Food increment:
 		levelData.NumFoodIncr = atoi(node->first_node("NumFoodIncr")->value());
-		
+
 		Println(levelData.rows, " : ", levelData.columns, " : ", levelData.time, " : ", levelData.VInit,
-		" : ", levelData.NumFoodInit, " : ", levelData.NumFoodIncr);
+			" : ", levelData.NumFoodInit, " : ", levelData.NumFoodIncr);
 		std::cout << "Values properly assigned" << std::endl;
-		
+
 	}
 
 
@@ -74,101 +78,169 @@ namespace IOManager {
 		rapidxml::xml_node<> *root_node = doc.first_node("document");
 		rapidxml::xml_node<> * node;
 		switch (difficulty) {
-			case GameDifficulty::EASY:
-				node = root_node->first_node("easy");
-				PrintData(node);
-				AssignData(node, levelData);
-				break;
-			case GameDifficulty::MEDIUM:
-				node = root_node->first_node("medium");
-				PrintData(node);
-				AssignData(node, levelData);
-				break;
-			case GameDifficulty::HARD:
-				node = root_node->first_node("hard");
-				PrintData(node);
-				AssignData(node, levelData);
-				break;
-			}
+		case GameDifficulty::EASY:
+			node = root_node->first_node("easy");
+			PrintData(node);
+			AssignData(node, levelData);
+			break;
+		case GameDifficulty::MEDIUM:
+			node = root_node->first_node("medium");
+			PrintData(node);
+			AssignData(node, levelData);
+			break;
+		case GameDifficulty::HARD:
+			node = root_node->first_node("hard");
+			PrintData(node);
+			AssignData(node, levelData);
+			break;
+		}
 		return levelData;
 	}
-	
 
-	static void SetScores(std::string &&filename, int sizeOfList) {
+	static Score SetScores(int gameDif, int sizeOfList, int score) {
+		std::string filename = "cfg/";
 		Score s;
+		s.askPersonName();
+		s.setScore(score);
 		int sizeScore = sizeof(Score);
-		std::ofstream myOutputFile;
+		std::ofstream myInputFile;
+		
 
-		myOutputFile.open(RESOURCE_FILE(filename), std::ios::out | std::ios::trunc | std::ios::binary);
+		switch (gameDif) {
+		case EASY:
+			std::cout << "ABRIENDO RANKING_EASY" << std::endl;
+			filename += "Ranking_EASY.dat";
+			break;
+		case MEDIUM:
+			std::cout << "ABRIENDO RANKING_MEDIUM" << std::endl;
+			filename += "Ranking_MEDIUM.dat";
+			break;
+		case HARD:
+			std::cout << "ABRIENDO RANKING_HARD" << std::endl;
+			filename += "Ranking_HARD.dat";
+			break;
+		}
 
-		if (!myOutputFile.is_open()) {
-			throw std::exception("[CreateAPopulationFile] System was not able to open the file");
+		myInputFile.open(RESOURCE_FILE(filename), std::ios::out | std::ios::binary | std::ios::ate);
+
+		if (!myInputFile.is_open()) {
+			throw std::exception("[RankingFile] System was not able to open the file");
 		}
-		for (int id = 0; id < sizeOfList; id++) {
-			myOutputFile.write((char *)(&s), sizeScore);
-		}
-		myOutputFile.close();
+
+		myInputFile.write(reinterpret_cast<char *>(&s), sizeScore);
+
+		//myInputFile.clear();
+
+		myInputFile.close();
+		std::cout << "DOC CERRADO" << std::endl;
 	}
 
-	static void ReadAndPrintScores(std::string &&filename) {
-		std::ifstream myInputFile;
+	static void ReadAndPrintScores(int gameDif, int score) {
+		std::string filename = "cfg/";
+		std::ifstream myFile;
+
 		std::streampos fileSize;
 		Score s;
+		s.askPersonName();
+		s.setScore(score);
 		int sizeScore = sizeof(Score);
 
+		switch (gameDif) {
+		case EASY:
+			std::cout << "ABRIENDO RANKING_EASY" << std::endl;
+			filename += "Ranking_EASY.dat";
+			break;
+		case MEDIUM:
+			std::cout << "ABRIENDO RANKING_MEDIUM" << std::endl;
+			filename += "Ranking_MEDIUM.dat";
+			break;
+		case HARD:
+			std::cout << "ABRIENDO RANKING_HARD" << std::endl;
+			filename += "Ranking_HARD.dat";
+			break;
+		}
+
+
 		//Read the file
-		myInputFile.open(RESOURCE_FILE(filename), std::ios::in | std::ios::binary);
-		if (!myInputFile.is_open()) {
+		myFile.open(RESOURCE_FILE(filename), std::ios::in | std::ios::binary);
+		if (!myFile.is_open()) {
 			throw std::exception("[ReadAndPrintScores] System was not able to open the file");
 		}
 
-		//Compute the filesize
-		myInputFile.seekg(0, std::ios::end);
-		fileSize = myInputFile.tellg();
-		myInputFile.seekg(0, std::ios::beg);
+		//-----------------------------
+		Score totalScores[11];
 
-		//Read the content
-		int numElements = fileSize / sizeScore;
-		for (int i = 0; i < numElements; i++) {
-			myInputFile.read((char *)(&s), sizeScore);
-			std::cout << s << std::endl;
-
+		//fullfill the totalScores with empty scores
+		for (int i = 0; i < 11; i++) {
+			totalScores[i].setName("-");
+			totalScores[i].setScore(0);
 		}
+		for (int i = 0; i < 10; i++) {
+			myFile.read(reinterpret_cast<char *>(&totalScores[i]), sizeScore);
+			//std::cout << totalScores[i] << std::endl;
+		}
+
+		//close the file
+		myFile.close();
+
+
+		//SORTING ALGORITHM
+		totalScores[10] = s;
+
+		int top = 10;
+		int index;
+		int swaps = 1;
+
+		// sort the scores 
+		while (top != 0 && swaps != 0) {
+			// set the swap variable to 0, because we haven't made any swaps yet.
+			swaps = 0;
+
+			// perform one iteration
+			for (index = 0; index < top; index++) {
+				// swap the indexes if necessary
+				if (CompareScore(totalScores[index].getScore(), totalScores[index + 1].getScore()) > 0) {
+					Swap(totalScores[index], totalScores[index + 1]);
+					swaps++;
+				}
+			}
+			top--;
+		}
+
+		//--------------------------------------------------------------
+		std::ofstream myInputFile;
+
+		myInputFile.open(RESOURCE_FILE(filename), std::ios::in | std::ios::binary);
+
+		if (!myInputFile.is_open()) {
+			throw std::exception("[RankingFile] System was not able to open the file");
+		}
+
+		for (int i = 0; i < 10; i++) {
+			std::cout << totalScores[i] << std::endl;
+			myInputFile.write(reinterpret_cast<char *>(&totalScores[i]), sizeScore);			
+		}
+		
 		myInputFile.close();
+
+		//WTF?
+		/*for (int i = 0; i < 10; i++) {
+			myFile.read(reinterpret_cast<char *>(&totalScores[i]), sizeScore);
+			std::cout << totalScores[i] << std::endl;
+		}*/
+
+		////open again the file to save the ranking
+		//myFile.open(RESOURCE_FILE(filename), std::ios::in | std::ios::binary);
+		//if (!myFile.is_open()) {
+		//	throw std::exception("[ReadAndPrintScores] System was not able to open the file");
+		//}
+
+		////save the sorted scores
+		//for (int i = 0; i < 11; i++) {
+		//	myFile.write(reinterpret_cast<char *>(&totalScores[i]), sizeScore);
+		//	std::cout << totalScores[i] << std::endl;
+		//}
+
+		
 	}
-
-		//rows="50" columns="50" time="400" VInit="1" NumFoodInit="5" NumFoodIncr="1"
-
-
-	//TestXML("level_1.xml");
-	/*
-	<impresora peso="50" type="blanc.negro">
-		<tinta>rj3847</tinta>
-	</impresora>
-
-	array=(a="z", b="x");
-	*/
-
-	//// Loader function that takes level info for a grid
-	//static std::vector<std::vector<ObjectID>> LoadLevel(std::string &&filename, int &rows, int &cols) {
-	//	std::ifstream fileData(RESOURCE_FILE(filename));
-	//	ASSERT(fileData.good());
-	//	std::vector<std::vector<ObjectID>> lvlData;
-	//	std::string line;
-	//	while (std::getline(fileData, line)) {
-	//		std::istringstream strData(std::move(line));
-	//		lvlData.emplace_back(std::istream_iterator<ObjectID>(std::move(strData)), std::istream_iterator<ObjectID>());
-	//	}
-	//	rows = int(lvlData.size()); cols = int(lvlData[0].size());
-	//	fileData.close();
-	//	#pragma region DEBUG_DATA
-	//		Println("Level: ", filename);
-	//		for (auto &r : lvlData) {
-	//			for (auto &c : r) Print(c, ' ');
-	//			Endln();
-	//		}
-	//	#pragma endregion
-	//	return std::move(lvlData);
-	//}
-
 }

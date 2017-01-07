@@ -19,20 +19,14 @@ Ranking::~Ranking() {
 void Ranking::OnEntry(void) {
 	score = GamePlaying::GetScore();
 
-	switch (GameMenu::gameDifficulty) {
-	case EASY:
-		std::cout << "ABRIENDO RANKING_EASY" << std::endl;
-		IOManager::SetScores("Ranking_EASY.bin", 1);
-		break;
-	case MEDIUM:
-		std::cout << "ABRIENDO RANKING_MEDIUM" << std::endl;
-		IOManager::SetScores("Ranking_MEDIUM.bin", 1);
-		break;
-	case HARD:
-		std::cout << "ABRIENDO RANKING_HARD" << std::endl;
-		IOManager::SetScores("Ranking_HARD.bin", 1);
-		break;
-	}
+	//IOManager::SaveRanking(score, GameMenu::gameDifficulty);
+//	Score totalScores[11];
+
+	IOManager::ReadAndPrintScores(GameMenu::gameDifficulty, score);
+
+	//IOManager::SetScores(GameMenu::gameDifficulty, 1, score);
+
+	
 	
 }
 void Ranking::OnExit(void) {
@@ -42,6 +36,10 @@ void Ranking::Update(void){
 	if (IM.IsKeyUp<'s'>()) {
 		Println("----------------GAMEDATA-----------\n", "Score: ", score, "\n");
 	
+	}
+	if (IM.IsKeyUp<'a'>()) {
+		Println("----------------Scores-----------\n");
+		IOManager::ReadAndPrintScores(GameMenu::gameDifficulty, score);
 	}
 	if (IM.IsKeyUp<KEY_BUTTON_ESCAPE>()) {
 		Println("GOING BACK");

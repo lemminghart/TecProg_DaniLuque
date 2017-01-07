@@ -110,18 +110,6 @@ std::istream& operator >> (std::istream& is, Score& s) {
 
 
 /**
-* Show the information of all
-*/
-void Score::updateAge(int increment) {
-	if (_score + increment < 0) {
-		throw std::exception("The score value has to be greater or equal to 0");
-	}
-	_score = _score + increment;
-}
-
-
-
-/**
 * Output operator is overloaded to allow you to use "ofstream<<p;"
 * @param os is the output operator
 * @param p is the object (person) that will be used inside the function

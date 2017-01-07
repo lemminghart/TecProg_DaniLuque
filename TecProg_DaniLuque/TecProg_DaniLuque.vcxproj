@@ -128,7 +128,6 @@
     <ClInclude Include="Resource.hh" />
     <ClInclude Include="Scene.hh" />
     <ClInclude Include="SceneManager.hh" />
-    <ClInclude Include="Scene_Dif_Selector.h" />
     <ClInclude Include="Scene_Playing.h" />
     <ClInclude Include="Scene_Ranking.h" />
     <ClInclude Include="Snake.h" />
@@ -142,7 +141,6 @@
     <ClCompile Include="Food.cpp" />
     <ClCompile Include="GameMenu.cc" />
     <ClCompile Include="main.cc" />
-    <ClCompile Include="Scene_Dif_Selector.cpp" />
     <ClCompile Include="Scene_Playing.cpp" />
     <ClCompile Include="Scene_Ranking.cpp" />
     <ClCompile Include="Snake.cpp" />

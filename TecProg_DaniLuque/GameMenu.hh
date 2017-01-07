@@ -23,11 +23,11 @@ public:
 	void Update(void) override;
 	void Draw(void) override;
 
-	int *gameDifficulty;
+	static int gameDifficulty;
 
 private:
 	//Grid m_grid;
-	bool selector;
+	bool menu;
 	Sprite m_background;
 	int m_score{ 0 };
 };

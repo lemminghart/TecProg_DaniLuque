@@ -24,7 +24,7 @@ GamePlaying::~GamePlaying(void) {
 }
 
 void GamePlaying::OnEntry(void) {
-	switch (*GD) {
+	switch (GameMenu::gameDifficulty) {
 	case EASY:
 		std::cout << "CARGANDO NIVEL FACIL" << std::endl;
 		m_leveldata = IOManager::LoadLevelData("cfg/Level_Data.xml", EASY, m_leveldata);

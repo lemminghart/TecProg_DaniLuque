@@ -11,7 +11,7 @@
 #include "Scene_Playing.h"
 #pragma region TODO
 
-
+int GameMenu::gameDifficulty = 0;
 
 using namespace Logger;
 
@@ -20,14 +20,13 @@ using namespace Logger;
 
 GameMenu::GameMenu(void) {
 	m_background = { { 0, 0, W.GetWidth(), W.GetHeight() }, ObjectID::BG_00 };
-	*gameDifficulty = DF;
 }
 
 GameMenu::~GameMenu(void){
 }
 
 void GameMenu::OnEntry(void) {
-	selector = false;
+	menu = true;
 }
 
 void GameMenu::OnExit(void) {
@@ -39,19 +38,19 @@ void GameMenu::OnExit(void) {
 
 void GameMenu::Update(void) {
 	static MouseCoords mouseCoords(0,0);
-	/*if (IM.IsMouseDown<MOUSE_BUTTON_LEFT>()) {
+	if (IM.IsMouseDown<MOUSE_BUTTON_LEFT>()) {
 		Println("===============");
 		Println("mxp: ", mouseCoords);
 		mouseCoords = IM.GetMouseCoords();
 
-	}*/
-	if (!selector) {
+	}
+	if (menu) {
 		if (IM.IsMouseUp<MOUSE_BUTTON_LEFT>()) {
 			Println("mxn: ", IM.GetMouseCoords());
 
 			if (mouseCoords.x > 350 && mouseCoords.x < 450 && mouseCoords.y > 340 && mouseCoords.y < 375) {
 				Println("PLAY");
-				selector = true;
+				menu = false;
 			}
 			if (mouseCoords.x > 350 && mouseCoords.x < 450 && mouseCoords.y > 460 && mouseCoords.y < 495) {
 				Println("EXIT");
@@ -71,26 +70,30 @@ void GameMenu::Update(void) {
 
 			if (mouseCoords.x > 347 && mouseCoords.x < 455 && mouseCoords.y > 100 && mouseCoords.y < 135) {
 				Println("EASY");
-				*gameDifficulty = EASY;
+				gameDifficulty = EASY;
 				SM.SetCurScene <GamePlaying>();
 
 			}
 			if (mouseCoords.x > 320 && mouseCoords.x < 480 && mouseCoords.y > 222 && mouseCoords.y < 254) {
 				Println("MEDIUM");
-				*gameDifficulty = MEDIUM;
+				gameDifficulty = MEDIUM;
 				SM.SetCurScene <GamePlaying>();
 
 			}
 			if (mouseCoords.x > 343 && mouseCoords.x < 460 && mouseCoords.y > 340 && mouseCoords.y < 374) {
 				Println("HARD");
-				*gameDifficulty = HARD;
+				gameDifficulty = HARD;
 				SM.SetCurScene <GamePlaying>();
 
 			}
 			if (mouseCoords.x > 345 && mouseCoords.x < 460 && mouseCoords.y > 462 && mouseCoords.y < 495) {
 				Println("BACK");
-				selector = false;
+				menu = true;
 				//GO BACK TO MAIN MENU
+			}
+			if (IM.IsKeyUp<KEY_BUTTON_ESCAPE>()) {
+				Println("GOING BACK");
+				menu = true;
 			}
 		}
 	}
@@ -102,7 +105,7 @@ void GameMenu::Update(void) {
 void GameMenu::Draw(void) {
 	m_background.Draw(); 
 	
-	if (!selector) {
+	if (menu) {
 		GUI::DrawTextShaded<FontID::ARIAL>("SNAKE",
 		{ W.GetWidth() >> 1, int(W.GetHeight()*.1f), 1, 1 },
 		{ 0, 255, 0 }, { 0, 0, 0 });

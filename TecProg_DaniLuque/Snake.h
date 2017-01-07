@@ -1,6 +1,5 @@
 #pragma once
 #include "Scene.hh"
-#include "GameScene.h"
 
 struct LevelData {
 	int rows;

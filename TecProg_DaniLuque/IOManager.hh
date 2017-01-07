@@ -14,7 +14,7 @@
 #include "Resource.hh"
 #include "XML/rapidxml.hpp"
 #include "XML/rapidxml_utils.hpp"
-#include "Scene_Dif_Selector.h"
+#include "GameMenu.hh"
 
 using namespace Logger;
 

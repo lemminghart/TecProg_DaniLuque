@@ -30,9 +30,6 @@
     <ClInclude Include="GameEngine.hh">
       <Filter>Controller</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>Model</Filter>
-    </ClInclude>
     <ClInclude Include="GUI.hh">
       <Filter>Model</Filter>
     </ClInclude>
@@ -78,9 +75,6 @@
     <ClInclude Include="GameMenu.hh">
       <Filter>Model\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Scene_Dif_Selector.h">
-      <Filter>Model\Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="Scene_Playing.h">
       <Filter>Model\Scenes</Filter>
     </ClInclude>
@@ -95,14 +89,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameScene.cpp">
-      <Filter>Model</Filter>
-    </ClCompile>
     <ClCompile Include="main.cc" />
     <ClCompile Include="GameMenu.cc">
-      <Filter>Model\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene_Dif_Selector.cpp">
       <Filter>Model\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Scene_Playing.cpp">

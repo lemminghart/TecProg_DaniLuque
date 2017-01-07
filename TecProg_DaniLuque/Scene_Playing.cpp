@@ -8,7 +8,7 @@
 #include "Scene_Ranking.h"
 #pragma region TODO
 
-
+int GamePlaying::score = 0;
 
 using namespace Logger;
 
@@ -71,7 +71,6 @@ void GamePlaying::OnEntry(void) {
 void GamePlaying::OnExit(void) {
 	delete s_snake;
 	delete f_food;
-
 	Println("LEAVING_GAME");
 	//	IM.SetQuit();
 }
@@ -85,6 +84,11 @@ void GamePlaying::Update(void) {
 	if (IM.IsKeyUp<'z'>()) {
 		Println("----------------RESTARTING LEVEL-----------\n");
 		RestartLevel();
+	}
+	if (IM.IsKeyUp<'x'>()) {
+		Println("----------------RESPAWNING A FRUIT-----------\n");
+		cellData[f_food->GetPosition().x][f_food->GetPosition().y].objectID = ObjectID::CELL_EMPTY;		
+		f_food->Spawn(*s_snake, foodcounter);
 	}
 	
 
@@ -164,6 +168,11 @@ void GamePlaying::RestartLevel(void) {
 		//aqui va velocidad inicial snake
 	}
 	else { //snake is dead
+		score = s_snake->GetScore();
 		SM.SetCurScene <Ranking>();
 	}
+}
+
+int GamePlaying::GetScore() {
+	return score;
 }

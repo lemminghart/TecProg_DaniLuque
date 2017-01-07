@@ -15,6 +15,8 @@
 #include "XML/rapidxml.hpp"
 #include "XML/rapidxml_utils.hpp"
 #include "GameMenu.hh"
+#include "Score.h"
+#include "Snake.h"
 
 using namespace Logger;
 
@@ -92,6 +94,48 @@ namespace IOManager {
 	}
 	
 
+	static void SetScores(std::string &&filename, int sizeOfList) {
+		Score s;
+		int sizeScore = sizeof(Score);
+		std::ofstream myOutputFile;
+
+		myOutputFile.open(RESOURCE_FILE(filename), std::ios::out | std::ios::trunc | std::ios::binary);
+
+		if (!myOutputFile.is_open()) {
+			throw std::exception("[CreateAPopulationFile] System was not able to open the file");
+		}
+		for (int id = 0; id < sizeOfList; id++) {
+			myOutputFile.write((char *)(&s), sizeScore);
+		}
+		myOutputFile.close();
+	}
+
+	static void ReadAndPrintScores(std::string &&filename) {
+		std::ifstream myInputFile;
+		std::streampos fileSize;
+		Score s;
+		int sizeScore = sizeof(Score);
+
+		//Read the file
+		myInputFile.open(RESOURCE_FILE(filename), std::ios::in | std::ios::binary);
+		if (!myInputFile.is_open()) {
+			throw std::exception("[ReadAndPrintScores] System was not able to open the file");
+		}
+
+		//Compute the filesize
+		myInputFile.seekg(0, std::ios::end);
+		fileSize = myInputFile.tellg();
+		myInputFile.seekg(0, std::ios::beg);
+
+		//Read the content
+		int numElements = fileSize / sizeScore;
+		for (int i = 0; i < numElements; i++) {
+			myInputFile.read((char *)(&s), sizeScore);
+			std::cout << s << std::endl;
+
+		}
+		myInputFile.close();
+	}
 
 		//rows="50" columns="50" time="400" VInit="1" NumFoodInit="5" NumFoodIncr="1"
 

@@ -10,7 +10,6 @@
 
 #pragma region GAME_SCENES
 #include "GameMenu.hh"
-#include "Scene_Dif_Selector.h"
 #include "Scene_Playing.h"
 #include "Scene_Ranking.h"
 #pragma endregion TODO
@@ -36,7 +35,6 @@ namespace GameEngine {
 	//! Adds the game scenes into the Scene Manager and decides which is the first screen
 	void AddScenes(void) {
 		SM.AddScene<GameMenu>();
-//		SM.AddScene<DifSelector>();
 		SM.AddScene<GamePlaying>();
 		SM.AddScene<Ranking>();
 		

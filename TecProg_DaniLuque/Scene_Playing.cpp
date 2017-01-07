@@ -78,10 +78,6 @@ void GamePlaying::OnExit(void) {
 
 void GamePlaying::Update(void) {
 
-	if (IM.IsKeyUp<KEY_BUTTON_ESCAPE>()) {
-		Println("GOING BACK");
-		SM.SetCurScene <GameMenu>();
-	}
 	if (IM.IsKeyUp<'s'>()) {
 		Println("----------------GAMEDATA-----------\n", "Score: ", s_snake->GetScore(), "\n",
 			"Lives: ", s_snake->GetNumLives());
@@ -113,6 +109,11 @@ void GamePlaying::Update(void) {
 	//if (IM.IsKeyDown<'0'>()) Println("0 down");
 	//if (IM.IsKeyUp<KEY_BUTTON_DOWN>()) Println("down arrow up");
 	
+	if (IM.IsKeyUp<KEY_BUTTON_ESCAPE>()) {
+		Println("GOING BACK");
+		SM.SetCurScene <GameMenu>();
+	}
+
 }
 
 void GamePlaying::Draw(void) {

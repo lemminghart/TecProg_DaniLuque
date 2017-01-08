@@ -45,6 +45,10 @@ void Ranking::Update(void){
 		Println("GOING BACK");
 		SM.SetCurScene <GameMenu>();
 	}
+	if (IM.IsKeyUp<'k'>()) {
+		Println("---------COMMANDS:---------\n", "- A to print scores\n", "- S to print gameData\n", "- ESC to go back\n");
+
+	}
 }
 void Ranking::Draw(void) {
 	m_background.Draw();

@@ -118,6 +118,9 @@ void GamePlaying::Update(void) {
 		SM.SetCurScene <GameMenu>();
 	}
 
+	if (IM.IsKeyUp<'k'>()) {
+		Println("---------COMMANDS:---------\n", "- Z to restart level\n", "- S to print gameData\n", "- X reposition the fruit\n", "- ESC to go back\n");
+	}
 }
 
 void GamePlaying::Draw(void) {

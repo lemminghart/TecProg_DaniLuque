@@ -83,7 +83,7 @@ void Snake::Go(void) {
 		else if (CheckNeighbours()) {
 			s_lastPosition = s_position;
 			s_position.x += 1;
-			Println("SNAKE DOWN");
+			Println("X: ", s_position.x, "Y: ", s_position.y);
 		}
 		else {
 			Println("MUERTE");
@@ -99,7 +99,7 @@ void Snake::Go(void) {
 		else if (CheckNeighbours()) {
 			s_lastPosition = s_position;
 			s_position.x -= 1;
-			Println("SNAKE UP");
+			Println("X: ", s_position.x, "Y: ", s_position.y);
 		}
 		else {
 			Println("MUERTE");
@@ -115,7 +115,7 @@ void Snake::Go(void) {
 		else if (CheckNeighbours()) {
 			s_lastPosition = s_position;
 			s_position.y -= 1;
-			Println("SNAKE LEFT");
+			Println("X: ", s_position.x, "Y: ", s_position.y);
 		}
 		else {
 			Println("MUERTE");
@@ -131,7 +131,7 @@ void Snake::Go(void) {
 		else if (CheckNeighbours()) {
 			s_lastPosition = s_position;
 			s_position.y += 1;
-			Println("SNAKE RIGHT");
+			Println("X: ", s_position.x, "Y: ", s_position.y);
 		}
 		else {
 			Println("MUERTE");

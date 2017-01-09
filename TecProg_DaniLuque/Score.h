@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <map>
 #include <exception>			//Management of exceptions
 #include <iostream>				//Management of cin and cout
 #include <stdlib.h>				//Management of random numbers: srand, rand 
@@ -13,6 +14,8 @@
 class Score {
 	int _score;
 	char _name[100];
+
+	
 public:
 	//Default constructor
 	Score();
@@ -33,14 +36,6 @@ public:
 	void printScore();
 	void askPersonName();
 
-	//Output and input operators are overloaded to allow you to use cin and cout directly with a Person object
-	//Friend is an special keyword that lets the function to access the attributes of an object even they are private.
-	friend std::ostream& operator<<(std::ostream& os, const Score& p);
-	friend std::istream& operator >> (std::istream& is, Score& p);
-
-	//File Output and input operators are overloaded to allow you to use cin and cout directly with a Person object
-	//Friend is an special keyword that lets the function to access the attributes of an object even they are private.
-	friend std::ofstream& operator<<(std::ofstream& os, const Score& p);
-	friend std::ifstream& operator >> (std::ifstream& is, Score& p);
-
 };
+
+

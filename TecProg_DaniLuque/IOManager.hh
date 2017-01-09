@@ -16,6 +16,7 @@
 #include "XML/rapidxml.hpp"
 #include "XML/rapidxml_utils.hpp"
 #include "GameMenu.hh"
+#include "Ranking_list.h"
 #include "Score.h"
 #include "Snake.h"
 
@@ -97,14 +98,13 @@ namespace IOManager {
 		return levelData;
 	}
 
-	static Score SetScores(int gameDif, int sizeOfList, int score) {
+	static void ManageRanking(int gameDif, int score) {
 		std::string filename = "cfg/";
-		Score s;
-		s.askPersonName();
-		s.setScore(score);
-		int sizeScore = sizeof(Score);
-		std::ofstream myInputFile;
-		
+		std::fstream myFile;
+		Ranking_list rank;
+		rank.askPersonName();
+
+		//score = 1320;
 
 		switch (gameDif) {
 		case EASY:
@@ -121,107 +121,169 @@ namespace IOManager {
 			break;
 		}
 
-		myInputFile.open(RESOURCE_FILE(filename), std::ios::out | std::ios::binary | std::ios::ate);
+		myFile.open(RESOURCE_FILE(filename), std::ios::in | std::ios::binary | std::ios::ate);
 
-		if (!myInputFile.is_open()) {
+		if (!myFile.is_open()) {
 			throw std::exception("[RankingFile] System was not able to open the file");
 		}
 
-		myInputFile.write(reinterpret_cast<char *>(&s), sizeScore);
+		myFile.read(reinterpret_cast<char *>(&rank.list_rank), sizeof(rank.list_rank));
 
-		//myInputFile.clear();
-
-		myInputFile.close();
-		std::cout << "DOC CERRADO" << std::endl;
-	}
-
-	static void ReadAndPrintScores(int gameDif, int score) {
-		std::string filename = "cfg/";
-		std::ifstream myFile;
-
-		std::streampos fileSize;
-		Score s;
-		s.askPersonName();
-		s.setScore(score);
-		int sizeScore = sizeof(Score);
-
-		switch (gameDif) {
-		case EASY:
-			std::cout << "ABRIENDO RANKING_EASY" << std::endl;
-			filename += "Ranking_EASY.dat";
-			break;
-		case MEDIUM:
-			std::cout << "ABRIENDO RANKING_MEDIUM" << std::endl;
-			filename += "Ranking_MEDIUM.dat";
-			break;
-		case HARD:
-			std::cout << "ABRIENDO RANKING_HARD" << std::endl;
-			filename += "Ranking_HARD.dat";
-			break;
-		}
-
-
-		//Read the file
-		myFile.open(RESOURCE_FILE(filename), std::ios::in | std::ios::binary);
-		if (!myFile.is_open()) {
-			throw std::exception("[ReadAndPrintScores] System was not able to open the file");
-		}
-
-		//-----------------------------
-		Score totalScores[11];
-
-		//fullfill the totalScores with empty scores
-		for (int i = 0; i < 11; i++) {
-			totalScores[i].setName("-");
-			totalScores[i].setScore(0);
-		}
-		for (int i = 0; i < 10; i++) {
-			myFile.read(reinterpret_cast<char *>(&totalScores[i]), sizeScore);
-			//std::cout << totalScores[i] << std::endl;
-		}
-
-		//close the file
 		myFile.close();
 
-
-		//SORTING ALGORITHM
-		totalScores[10] = s;
-
-		int top = 10;
-		int index;
-		int swaps = 1;
-
-		// sort the scores 
-		while (top != 0 && swaps != 0) {
-			// set the swap variable to 0, because we haven't made any swaps yet.
-			swaps = 0;
-
-			// perform one iteration
-			for (index = 0; index < top; index++) {
-				// swap the indexes if necessary
-				if (CompareScore(totalScores[index].getScore(), totalScores[index + 1].getScore()) > 0) {
-					Swap(totalScores[index], totalScores[index + 1]);
-					swaps++;
-				}
-			}
-			top--;
+		for (auto it = rank.list_rank.rbegin(); it != rank.list_rank.rend(); ++it) {
+			std::cout << "Score: " << it->first << " Name: " << it->second << std::endl;
 		}
 
-		//--------------------------------------------------------------
-		std::ofstream myInputFile;
+		std::cout << "---------------------------------------------------------" << std::endl;
 
-		myInputFile.open(RESOURCE_FILE(filename), std::ios::in | std::ios::binary);
+		rank.list_rank.insert(std::pair<int, std::string>(score, { rank.getName() }));
 
-		if (!myInputFile.is_open()) {
-			throw std::exception("[RankingFile] System was not able to open the file");
-		}
+		//borramos el primer elemento ya que se almacenan en orden descendente
+		rank.list_rank.erase(rank.list_rank.begin()->first);
 
-		for (int i = 0; i < 10; i++) {
-			std::cout << totalScores[i] << std::endl;
-			myInputFile.write(reinterpret_cast<char *>(&totalScores[i]), sizeScore);			
+		//printamos los elementos en orden ascendente
+		for (auto it = rank.list_rank.rbegin(); it != rank.list_rank.rend(); ++it) {
+			std::cout << "Score: " << it->first << " Name: " << it->second << std::endl;
 		}
 		
-		myInputFile.close();
+		myFile.open(RESOURCE_FILE(filename), std::ios::out | std::ios::binary);
+
+		myFile.write(reinterpret_cast<char *>(&rank.list_rank), sizeof(rank.list_rank));
+		
+		myFile.close();
+
+		system("pause");
+
+	}
+
+	//-------------------------------------------------
+
+	//static Score SetScores(int gameDif, int sizeOfList, int score) {
+	//	std::string filename = "cfg/";
+	//	Score s;
+	//	s.askPersonName();
+	//	s.setScore(score);
+	//	int sizeScore = sizeof(Score);
+	//	std::ofstream myInputFile;
+
+
+	//	switch (gameDif) {
+	//	case EASY:
+	//		std::cout << "ABRIENDO RANKING_EASY" << std::endl;
+	//		filename += "Ranking_EASY.dat";
+	//		break;
+	//	case MEDIUM:
+	//		std::cout << "ABRIENDO RANKING_MEDIUM" << std::endl;
+	//		filename += "Ranking_MEDIUM.dat";
+	//		break;
+	//	case HARD:
+	//		std::cout << "ABRIENDO RANKING_HARD" << std::endl;
+	//		filename += "Ranking_HARD.dat";
+	//		break;
+	//	}
+
+	//	myInputFile.open(RESOURCE_FILE(filename), std::ios::out | std::ios::binary | std::ios::ate);
+
+	//	if (!myInputFile.is_open()) {
+	//		throw std::exception("[RankingFile] System was not able to open the file");
+	//	}
+
+	//	myInputFile.write(reinterpret_cast<char *>(&s), sizeScore);
+
+	//	//myInputFile.clear();
+
+	//	myInputFile.close();
+	//	std::cout << "DOC CERRADO" << std::endl;
+	//}
+
+	//static void ReadAndPrintScores(int gameDif, int score) {
+	//	std::string filename = "cfg/";
+	//	std::ifstream myFile;
+
+	//	std::streampos fileSize;
+	//	Score s;
+	//	s.askPersonName();
+	//	s.setScore(score);
+	//	int sizeScore = sizeof(Score);
+
+	//	switch (gameDif) {
+	//	case EASY:
+	//		std::cout << "ABRIENDO RANKING_EASY" << std::endl;
+	//		filename += "Ranking_EASY.dat";
+	//		break;
+	//	case MEDIUM:
+	//		std::cout << "ABRIENDO RANKING_MEDIUM" << std::endl;
+	//		filename += "Ranking_MEDIUM.dat";
+	//		break;
+	//	case HARD:
+	//		std::cout << "ABRIENDO RANKING_HARD" << std::endl;
+	//		filename += "Ranking_HARD.dat";
+	//		break;
+	//	}
+
+
+	//	//Read the file
+	//	myFile.open(RESOURCE_FILE(filename), std::ios::in | std::ios::binary);
+	//	if (!myFile.is_open()) {
+	//		throw std::exception("[ReadAndPrintScores] System was not able to open the file");
+	//	}
+
+	//	//-----------------------------
+	//	Score totalScores[11];
+
+	//	//fullfill the totalScores with empty scores
+	//	for (int i = 0; i < 11; i++) {
+	//		totalScores[i].setName("-");
+	//		totalScores[i].setScore(0);
+	//	}
+	//	for (int i = 0; i < 10; i++) {
+	//		myFile.read(reinterpret_cast<char *>(&totalScores[i]), sizeScore);
+	//		//std::cout << totalScores[i] << std::endl;
+	//	}
+
+	//	//close the file
+	//	myFile.close();
+
+
+	//	//SORTING ALGORITHM
+	//	totalScores[10] = s;
+
+	//	int top = 10;
+	//	int index;
+	//	int swaps = 1;
+
+	//	// sort the scores 
+	//	while (top != 0 && swaps != 0) {
+	//		// set the swap variable to 0, because we haven't made any swaps yet.
+	//		swaps = 0;
+
+	//		// perform one iteration
+	//		for (index = 0; index < top; index++) {
+	//			// swap the indexes if necessary
+	//			if (CompareScore(totalScores[index].getScore(), totalScores[index + 1].getScore()) > 0) {
+	//				Swap(totalScores[index], totalScores[index + 1]);
+	//				swaps++;
+	//			}
+	//		}
+	//		top--;
+	//	}
+
+	//	//--------------------------------------------------------------
+	//	std::ofstream myInputFile;
+
+	//	myInputFile.open(RESOURCE_FILE(filename), std::ios::in | std::ios::binary);
+
+	//	if (!myInputFile.is_open()) {
+	//		throw std::exception("[RankingFile] System was not able to open the file");
+	//	}
+
+	//	for (int i = 0; i < 10; i++) {
+	//		std::cout << totalScores[i] << std::endl;
+	//		myInputFile.write(reinterpret_cast<char *>(&totalScores[i]), sizeScore);			
+	//	}
+	//	
+	//	myInputFile.close();
 
 		//WTF?
 		/*for (int i = 0; i < 10; i++) {
@@ -241,6 +303,4 @@ namespace IOManager {
 		//	std::cout << totalScores[i] << std::endl;
 		//}
 
-		
-	}
 }

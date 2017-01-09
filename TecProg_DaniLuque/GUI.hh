@@ -22,6 +22,10 @@ public:
 		R.Push(TTF_RenderText_Solid(R.GetFont<fontID>(), msg.c_str(), color()), transform);
 	}
 	template<FontID fontID>
+	static void DrawTextSolid(const std::string &msg, Transform &&transform, Color &&color) {
+		R.Push(TTF_RenderText_Solid(R.GetFont<fontID>(), msg.c_str(), color()), transform);
+	}
+	template<FontID fontID>
 	static void DrawTextShaded(std::string &&msg, Transform &&transform, Color &&foregroundColor, Color &&backgroundColor) {
 		R.Push(TTF_RenderText_Shaded(R.GetFont<fontID>(), msg.c_str(), foregroundColor(), backgroundColor()), transform);
 	}

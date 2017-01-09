@@ -90,6 +90,9 @@
     <ClInclude Include="Score.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Ranking_list.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cc" />
@@ -109,6 +112,9 @@
       <Filter>Model\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Score.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Ranking_list.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>

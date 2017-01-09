@@ -4,7 +4,7 @@
 * Default constructor. It initializes the initial values
 */
 Score::Score() {
-	_name[0] = '\0';
+	_name[0] = ' ';
 	_score = 0;
 }
 
@@ -86,48 +86,3 @@ void Score::askPersonName() {
 }
 
 
-/**
-* Output operator is overloaded to allow you to use "cout<<p;"
-* @param os is the output operator
-* @param p is the object (person) that will be used inside the function
-*/
-std::ostream& operator<<(std::ostream& os, const Score& s) {
-	os << "Name:" << s._name << ", Score:" << s._score;
-	return os;
-}
-
-/**
-* Input operator is overloaded to allow you to use "cin>>p;". In this implementation we write inside the question that is asked to the user.
-* @param is is the input operator
-* @param p is the object (person) that will be used inside the function
-*/
-std::istream& operator >> (std::istream& is, Score& s) {
-	//Ask data to the user
-	std::cout << "What's your name?";
-	is >> s._name;
-	return is;
-}
-
-
-/**
-* Output operator is overloaded to allow you to use "ofstream<<p;"
-* @param os is the output operator
-* @param p is the object (person) that will be used inside the function
-*/
-
-std::ofstream& operator<<(std::ofstream& os, const Score& s) {
-	os << s._name << " ";
-	os << s._score << " ";
-	return os;
-}
-
-/**
-* Input operator is overloaded to allow you to use "ifstream>>p"
-* @param is is the input operator
-* @param p is the object (person) that will be used inside the function
-*/
-std::ifstream& operator >> (std::ifstream& is, Score& s) {
-	is >> s._name;
-	is >> s._score;
-	return is;
-}

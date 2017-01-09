@@ -22,11 +22,11 @@ void Ranking::OnEntry(void) {
 	//IOManager::SaveRanking(score, GameMenu::gameDifficulty);
 //	Score totalScores[11];
 
-	IOManager::ReadAndPrintScores(GameMenu::gameDifficulty, score);
+	//IOManager::ReadAndPrintScores(GameMenu::gameDifficulty, score);
 
 	//IOManager::SetScores(GameMenu::gameDifficulty, 1, score);
 
-	
+	IOManager::ManageRanking(GameMenu::gameDifficulty, score);
 	
 }
 void Ranking::OnExit(void) {
@@ -39,7 +39,7 @@ void Ranking::Update(void){
 	}
 	if (IM.IsKeyUp<'a'>()) {
 		Println("----------------Scores-----------\n");
-		IOManager::ReadAndPrintScores(GameMenu::gameDifficulty, score);
+		//IOManager::ReadAndPrintScores(GameMenu::gameDifficulty, score);
 	}
 	if (IM.IsKeyUp<KEY_BUTTON_ESCAPE>()) {
 		Println("GOING BACK");

@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene.hh"
+#include "TimeManager.hh"
 
 struct LevelData {
 	int rows;
@@ -15,6 +16,8 @@ struct Position {
 	int y;
 };
 
+
+
 enum Direction {UP, DOWN, RIGHT, LEFT};
 
 
@@ -26,9 +29,11 @@ public:
 	~Snake();
 	void Update(void);
 	void Draw();
-	
+
 	void Go(void);
 	bool CheckNeighbours(void);
+	void addBody(void);
+	//change
 
 	//setters & getters
 	void SetPosition(Position pos);
@@ -38,6 +43,7 @@ public:
 	void SetBodySize(int bodySize);
 	void SetDirection(Direction direction);
 	void SetDead(bool state);
+	void setGrow(bool grow);
 
 	Position GetPosition(void);
 	Position GetLastPosition(void);
@@ -46,19 +52,28 @@ public:
 	int GetBodySize(void);
 	Direction GetDirection(void);
 	bool GetDead(void);
+	bool getGrow(void);
 
 	struct S_Cell : public Sprite { Sprite content; } **cellData; // Cell structure to store its position, its texture and its content (wether is empty or not)
-
+	
+	std::vector<Position> _serpiente;
+	
 private:
-	Direction s_direction;
-	Direction s_lastDirection;
 	int lives;
 	int bodySize;
 	int s_speed;
 	int s_score;
 	bool dead;
-	Position s_position;
-	Position s_lastPosition;
+	bool grow;
+	
+	
+	
+	Direction _direction;
+	Direction _lastDirection;
+	Position _lastPosition;
+	
+	double percent;
+
 
 	LevelData s_leveldata;
 

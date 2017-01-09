@@ -6,6 +6,7 @@
 #include "IOManager.hh"
 #include "TimeManager.hh"
 #include "Scene_Ranking.h"
+#include "Snake.h"
 #pragma region TODO
 
 int GamePlaying::score = 0;
@@ -76,7 +77,39 @@ void GamePlaying::OnExit(void) {
 }
 
 void GamePlaying::Update(void) {
+	
+	//movimiento de la cabeza
+	s_snake->Update();
+	
+	//Comprobar si la serpiente sigue viva
+	if (s_snake->GetDead()) { //take out 1 live
+		RestartLevel();
+	}
 
+	//set grow to false to later prove if snake has grown
+	s_snake->setGrow(false);
+
+	//check if snake eats food
+	if (s_snake->GetPosition().x == f_food->GetPosition().x && s_snake->GetPosition().y == f_food->GetPosition().y) {
+		std::cout << "EAT FOOD!" << std::endl;
+		s_snake->SetScore(score += f_food->GetValue());
+		foodcounter++;
+		f_food->Spawn(*s_snake, foodcounter);
+
+		//hacer crecer la serpiente
+		s_snake->addBody();
+	}
+		
+	
+	//KEY INPUTS
+	if (IM.IsKeyUp<'d'>()) {
+		Println("----------------HEADDATA-----------\n", "X: ", s_snake->_serpiente[0].x,"\n",
+			"Y: ", s_snake->_serpiente[0].y);
+	}
+	/*if (IM.IsKeyUp<'t'>()) {
+		Println("----------------TAILDATA-----------\n", "X: ", s_snake->tail->s_position.x, " ",
+			"Y: ", s_snake->tail->s_position.y);
+	}*/
 	if (IM.IsKeyUp<'s'>()) {
 		Println("----------------GAMEDATA-----------\n", "Score: ", s_snake->GetScore(), "\n",
 			"Lives: ", s_snake->GetNumLives());
@@ -87,55 +120,41 @@ void GamePlaying::Update(void) {
 	}
 	if (IM.IsKeyUp<'x'>()) {
 		Println("----------------RESPAWNING A FRUIT-----------\n");
-		cellData[f_food->GetPosition().x][f_food->GetPosition().y].objectID = ObjectID::CELL_EMPTY;		
+		cellData[f_food->GetPosition().x][f_food->GetPosition().y].objectID = ObjectID::CELL_EMPTY;
 		f_food->Spawn(*s_snake, foodcounter);
 	}
-	
-
-	//update del snake (inputs i tal)
-	s_snake->Update();
-	
-	//Comprobar si la serpiente sigue viva
-	if (s_snake->GetDead()) { //take out 1 live
-		RestartLevel();
+	if (IM.IsKeyUp<'k'>()) {
+		Println("---------COMMANDS:---------\n", "- Z to restart level\n", "- S to print gameData\n", "- X reposition the fruit\n", "- ESC to go back\n");
 	}
-
-	//check if snake eats food
-	if (s_snake->GetPosition().x == f_food->GetPosition().x && s_snake->GetPosition().y == f_food->GetPosition().y) {
-		s_snake->SetScore(score += f_food->GetValue());
-		foodcounter++;
-		f_food->Spawn(*s_snake, foodcounter);
-		
-	}
-
-	//// Test InputManager key methods
-	//if (IM.IsKeyHold<'a'>()) Println("a hold");
-	//if (IM.IsKeyDown<'0'>()) Println("0 down");
-	//if (IM.IsKeyUp<KEY_BUTTON_DOWN>()) Println("down arrow up");
-	
 	if (IM.IsKeyUp<KEY_BUTTON_ESCAPE>()) {
 		Println("GOING BACK");
 		SM.SetCurScene <GameMenu>();
-	}
-
-	if (IM.IsKeyUp<'k'>()) {
-		Println("---------COMMANDS:---------\n", "- Z to restart level\n", "- S to print gameData\n", "- X reposition the fruit\n", "- ESC to go back\n");
 	}
 }
 
 void GamePlaying::Draw(void) {
 	m_background.Draw();
 	
+#pragma region SNAKE
 
-	//pinta la cabeza de la serpiente
-	cellData[s_snake->GetPosition().x][s_snake->GetPosition().y].objectID = ObjectID::SNAKE_HEAD;
+	//pinta el cuerpo de la serpiente
+	for (int i = 1; i < s_snake->_serpiente.size()-1; i++) {
+		cellData[s_snake->_serpiente[i].x][s_snake->_serpiente[i].y].objectID = ObjectID::SNAKE_BODY;
+	}
 
+	int lol = (s_snake->_serpiente.size() - 1);
 	//limpia la ultima posición de la serpiente
-	cellData[s_snake->GetLastPosition().x][s_snake->GetLastPosition().y].objectID = ObjectID::CELL_EMPTY;
-		//ContentTransform(s_snake->GetPosition().x, s_snake->GetPosition().y) = cellData[s_snake->GetPosition().x][s_snake->GetPosition().y].transform;
+	cellData[s_snake->_serpiente[(s_snake->_serpiente.size()-1)].x][s_snake->_serpiente[(s_snake->_serpiente.size()-1)].y].objectID = ObjectID::CELL_EMPTY;
+	
+	//pinta la cabeza de la serpiente
+	cellData[s_snake->_serpiente[0].x][s_snake->_serpiente[0].y].objectID = ObjectID::SNAKE_HEAD;
+
+#pragma endregion
 
 	//pinta la comida en el mapa
 	cellData[f_food->GetPosition().x][f_food->GetPosition().y].objectID = ObjectID::FOOD_APPLE;
+
+	
 
 	//imprime el contenido de la matriz
 	for (int i = 0; i < m_leveldata.rows; ++i) for (int j = 0; j < m_leveldata.columns; ++j) cellData[i][j].Draw();
@@ -144,6 +163,7 @@ void GamePlaying::Draw(void) {
 
 void GamePlaying::RestartLevel(void) {
 	if (s_snake->GetNumLives() > 0) {
+		std::cout << "RESTART LEVEL!" << std::endl;
 		//erase drawn sprites
 		for (int i = 0; i < m_leveldata.rows; ++i) {
 			for (int j = 0; j < m_leveldata.columns; ++j) {

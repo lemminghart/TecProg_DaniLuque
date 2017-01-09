@@ -20,14 +20,18 @@ Snake::Snake() {
 Snake::Snake(LevelData &lvldata) {
 	s_leveldata = lvldata;
 
-	lives = 3;
-	bodySize = 0;
+	lives = 2;
+	bodySize = 4;
 	s_score = 0;
+	_serpiente.resize(bodySize);
+	_serpiente[0] = Position{ 5,5 }; //cabeza
+	_serpiente[1] = Position{ 5,4 };
+	_serpiente[2] = Position{ 5,3 };
+	_serpiente[3] = Position{ 5,2 }; //blanco
 
-	s_direction = RIGHT;
-	s_position = { 5,5 };
-	s_lastPosition = { 4,4 };
-	
+	_direction = RIGHT;
+
+	percent = 0;
 }
 
 Snake::~Snake(void) {
@@ -37,53 +41,51 @@ Snake::~Snake(void) {
 void Snake::Update(void) {
 	//static MouseCoords mouseCoords(0, 0);
 
-	if (IM.IsKeyHold<'l'>()) Println("SNAKE VIVE!");
-
-	if (IM.IsKeyUp<KEY_BUTTON_DOWN>()) {
-		s_lastDirection = s_direction;
-		s_direction = DOWN;
-		Go();
+	if (IM.IsKeyUp<KEY_BUTTON_DOWN>() && _direction != UP) {
+		_direction = DOWN;
+		//Go();
 	}
-	if (IM.IsKeyUp<KEY_BUTTON_UP>()) {
-		s_lastDirection = s_direction;
-		s_direction = UP;
-		Go();
+	if (IM.IsKeyUp<KEY_BUTTON_UP>() && _direction != DOWN) {
+		_direction = UP;
+		//Go();
 	}
-	if (IM.IsKeyUp<KEY_BUTTON_LEFT>()){
-		s_lastDirection = s_direction;
-		s_direction = LEFT;
-		Go();
+	if (IM.IsKeyUp<KEY_BUTTON_LEFT>() && _direction != RIGHT){
+		_direction = LEFT;
+		//Go();
 	}
-	if (IM.IsKeyUp<KEY_BUTTON_RIGHT>()){
-		s_lastDirection = s_direction;
-		s_direction = RIGHT;
-		Go();
+	if (IM.IsKeyUp<KEY_BUTTON_RIGHT>() && _direction != LEFT){
+		_direction = RIGHT;
+		//Go();
 	}
 	
 	
-
-	//PONER EL GO AQUI PARA QUE AVANCE SOLA (SE TIENE QUE REGULAR ANTES EL FRAMERATE)
-	//Go();
-
+	//aqui se regula la velocidad de la serpiente
+	if (percent > 0.2) {
+		Go();
+		percent = 0;
+	}
+	percent += TM.GetDeltaTime();
 }
 
 void Snake::Draw(void) {
 
 	
 
+
 }
 
+//done
 void Snake::Go(void) {
-	switch (s_direction) {
+	switch (_direction) {
 	case DOWN:
-		if (s_lastDirection == UP) {
-			s_direction = s_lastDirection;
-			break;
-		}
-		else if (CheckNeighbours()) {
-			s_lastPosition = s_position;
-			s_position.x += 1;
-			Println("X: ", s_position.x, "Y: ", s_position.y);
+		if (CheckNeighbours()) {
+			for (int i = (_serpiente.size()-1); i > 0; i--) {
+				Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
+				_serpiente[i] = _serpiente[i - 1];
+				Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
+			}
+			_serpiente[0].x += 1;
+			Println("X: ", _serpiente[0].x, "Y: ", _serpiente[0].y);
 		}
 		else {
 			Println("MUERTE");
@@ -92,14 +94,15 @@ void Snake::Go(void) {
 		}
 		break;
 	case UP:
-		if (s_lastDirection == DOWN) {
-			s_direction = s_lastDirection;
-			break;
-		}
-		else if (CheckNeighbours()) {
-			s_lastPosition = s_position;
-			s_position.x -= 1;
-			Println("X: ", s_position.x, "Y: ", s_position.y);
+		if (CheckNeighbours()) {
+			for (int i = (_serpiente.size() - 1); i > 0; i--) {
+				Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
+				_serpiente[i] = _serpiente[i - 1];
+				Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
+			}
+			_serpiente[0].x -= 1;
+			
+			Println("X: ", _serpiente[0].x, "Y: ", _serpiente[0].y);
 		}
 		else {
 			Println("MUERTE");
@@ -108,14 +111,14 @@ void Snake::Go(void) {
 		}
 		break;
 	case LEFT:
-		if (s_lastDirection == RIGHT) {
-			s_direction = s_lastDirection;
-			break;
-		}
-		else if (CheckNeighbours()) {
-			s_lastPosition = s_position;
-			s_position.y -= 1;
-			Println("X: ", s_position.x, "Y: ", s_position.y);
+		if (CheckNeighbours()) {
+			for (int i = (_serpiente.size() - 1); i > 0; i--) {
+				Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
+				_serpiente[i] = _serpiente[i - 1];
+				Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
+			}
+			_serpiente[0].y -= 1;
+			Println("Cabeza: - X: ", _serpiente[0].x, "Y: ", _serpiente[0].y);
 		}
 		else {
 			Println("MUERTE");
@@ -124,14 +127,14 @@ void Snake::Go(void) {
 		}
 		break;
 	case RIGHT:
-		if (s_lastDirection == LEFT) {
-			s_direction = s_lastDirection;
-			break;
-		}
-		else if (CheckNeighbours()) {
-			s_lastPosition = s_position;
-			s_position.y += 1;
-			Println("X: ", s_position.x, "Y: ", s_position.y);
+		if (CheckNeighbours()) {
+			for (int i = (_serpiente.size() - 1); i > 0; i--) {
+				Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
+				_serpiente[i] = _serpiente[i - 1];
+				Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
+			}
+			_serpiente[0].y += 1;
+			Println("X: ", _serpiente[0].x, "Y: ", _serpiente[0].y);
 		}
 		else {
 			Println("MUERTE");
@@ -145,22 +148,23 @@ void Snake::Go(void) {
 	}
 }
 
+//ACTUALIZAR PARA CONTROLAR COLISION CON SU PROPIO CUERPO
 bool Snake::CheckNeighbours(void) {
-	switch (s_direction) {
+	switch (_direction) {
 	case DOWN:
-		if ((s_position.x + 1) > 0 && (s_position.x + 1) < (s_leveldata.rows - 1)) return true;
+		if ((_serpiente[0].x + 1) > 0 && (_serpiente[0].x + 1) < (s_leveldata.rows - 1)) return true;
 		else return false;
 		break;
 	case UP:
-		if ((s_position.x - 1) > 0 && (s_position.x - 1) < (s_leveldata.rows - 1)) return true;
+		if ((_serpiente[0].x - 1) > 0 && (_serpiente[0].x - 1) < (s_leveldata.rows - 1)) return true;
 		else return false;
 		break;
 	case LEFT:
-		if ((s_position.y - 1) > 0 && (s_position.y - 1) < (s_leveldata.columns - 1)) return true;
+		if ((_serpiente[0].y - 1) > 0 && (_serpiente[0].y - 1) < (s_leveldata.columns - 1)) return true;
 		else return false;
 		break;
 	case RIGHT:
-		if ((s_position.y + 1) > 0 && (s_position.y + 1) < (s_leveldata.columns - 1)) return true;
+		if ((_serpiente[0].y + 1) > 0 && (_serpiente[0].y + 1) < (s_leveldata.columns - 1)) return true;
 		else return false;
 		break;
 	default:
@@ -169,18 +173,25 @@ bool Snake::CheckNeighbours(void) {
 	}
 }
 
+
+void Snake::addBody(void) {
+	bodySize++;
+	_serpiente.resize(bodySize);
+
+}
+
 //SETTERS
 
 void Snake::SetPosition(Position pos) {
-	s_position = pos;
+	_serpiente[0] = pos;
 }
 
 void Snake::SetLastPosition(Position pos) {
-	s_lastPosition = pos;
+	_lastPosition = pos;
 }
 
 void Snake::SetDirection(Direction direction) {
-	s_direction = direction;
+	_direction = direction;
 }
 
 void Snake::SetScore(int score) {
@@ -195,29 +206,44 @@ void Snake::SetDead(bool state) {
 	dead = state;
 }
 
+void Snake::SetBodySize(int size) {
+	bodySize = size;
+}
+
+void Snake::setGrow(bool _grow) {
+	grow = _grow;
+}
 
 //GETTERS
 
-Direction Snake::GetDirection() {
-	return s_direction;
+Direction Snake::GetDirection(void) {
+	return _direction;
 }
 
-Position Snake::GetPosition() {
-	return s_position;
+Position Snake::GetPosition(void) {
+	return _serpiente[0];
 }
 
-Position Snake::GetLastPosition() {
-	return s_lastPosition;
+Position Snake::GetLastPosition(void) {
+	return _lastPosition;
 }
 
-int Snake::GetScore() {
+int Snake::GetScore(void) {
 	return s_score;
 }
 
-int Snake::GetNumLives() {
+int Snake::GetNumLives(void) {
 	return lives;
 }
 
-bool Snake::GetDead() {
+bool Snake::GetDead(void) {
 	return dead;
+}
+
+int Snake::GetBodySize(void) {
+	return bodySize;
+}
+
+bool Snake::getGrow(void) {
+	return grow;
 }

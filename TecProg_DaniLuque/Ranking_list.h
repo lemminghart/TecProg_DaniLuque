@@ -15,10 +15,12 @@ class Ranking_list {
 
 public:
 	Ranking_list();
+	Ranking_list(bool u);
 	~Ranking_list();
 
-	std::map<int, std::string> list_rank;
+	std::multimap<int, std::string> list_rank;
 
+	void deletePair(int index);
 
 	//Get and Set methods for getting and setting the attribute values
 	int getScore();

@@ -21,6 +21,7 @@
 #include "Snake.h"
 
 using namespace Logger;
+using namespace std;
 
 namespace IOManager {
 
@@ -98,209 +99,273 @@ namespace IOManager {
 		return levelData;
 	}
 
-	static void ManageRanking(int gameDif, int score) {
+	static void ReadRanking(Ranking_list &rank) {
 		std::string filename = "cfg/";
-		std::fstream myFile;
-		Ranking_list rank;
-		rank.askPersonName();
+		std::ifstream myInputFile;
 
-		//score = 1320;
+		myInputFile.open(RESOURCE_FILE(filename), std::ios::in);
+		//myInputFile.open(RESOURCE_FILE(filename), std::ios::in | std::ios::binary);
 
-		switch (gameDif) {
-		case EASY:
-			std::cout << "ABRIENDO RANKING_EASY" << std::endl;
-			filename += "Ranking_EASY.dat";
-			break;
-		case MEDIUM:
-			std::cout << "ABRIENDO RANKING_MEDIUM" << std::endl;
-			filename += "Ranking_MEDIUM.dat";
-			break;
-		case HARD:
-			std::cout << "ABRIENDO RANKING_HARD" << std::endl;
-			filename += "Ranking_HARD.dat";
-			break;
-		}
-
-		myFile.open(RESOURCE_FILE(filename), std::ios::in | std::ios::binary | std::ios::ate);
-
-		if (!myFile.is_open()) {
+		if (!myInputFile.is_open()) {
 			throw std::exception("[RankingFile] System was not able to open the file");
 		}
 
-		myFile.read(reinterpret_cast<char *>(&rank.list_rank), sizeof(rank.list_rank));
+		myInputFile.read(reinterpret_cast<char *>(&rank.list_rank), sizeof(rank.list_rank));
 
-		myFile.close();
+		myInputFile.close();
+	}
+
+	static void PrintRanking(Ranking_list &rank) {
+		
+		std::cout << "-----------------------RANKING-----------------------" << std::endl;
 
 		for (auto it = rank.list_rank.rbegin(); it != rank.list_rank.rend(); ++it) {
 			std::cout << "Score: " << it->first << " Name: " << it->second << std::endl;
 		}
+		
+	}
 
-		std::cout << "---------------------------------------------------------" << std::endl;
+	static void WriteRanking(Ranking_list &rank) {
+		std::string filename = "cfg/";
+		std::ofstream myOutputFile;
 
-		rank.list_rank.insert(std::pair<int, std::string>(score, { rank.getName() }));
+		myOutputFile.open(RESOURCE_FILE(filename), std::ios::out);
+		//myOutputFile.open(RESOURCE_FILE(filename), std::ios::out | std::ios::binary);
+		
+		if (!myOutputFile.is_open()) {
+			throw std::exception("[RankingFile] System was not able to open the file");
+		}
+
+		myOutputFile.write(reinterpret_cast<char *>(&rank.list_rank), sizeof(rank.list_rank));
+
+		myOutputFile.close();
+
+	}
+
+	static bool FileExists(const std::string& filename)
+	{
+		struct stat buf;
+		if (stat(filename.c_str(), &buf) != -1)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	static void ManageRanking(int gameDif, int score) {
+		std::string filename = "cfg/";
+		Ranking_list rank(false); //lista rara
+		Ranking_list blank_rank(true); //lista vacia 0 & " - "
+		Ranking_list prueba;
+
+
+
+		bool create;
+		//rank.askPersonName();
+
+		score = 4300;
+
+		//ESCOGEMOS EL ARCHIVO QUE QUEREMOS ABRIR (SEGUN DIFICULTAD)
+		//SI NO EXISTE LO INICIALIZAMOS CON SCORE: 0 NAME: " - "
+		switch (gameDif) {
+		case EASY:
+			filename += "Ranking_EASY.dat";
+			if (FileExists(RESOURCE_FILE(filename))) {
+				std::cout << "ABRIENDO Ranking_EASY" << std::endl;
+			}
+			else {
+				create = true;
+			}
+			break;
+		case MEDIUM:
+			filename += "Ranking_MEDIUM.dat";
+			if (FileExists(RESOURCE_FILE(filename))) {
+				std::cout << "ABRIENDO Ranking_MEDIUM" << std::endl;
+			}
+			else {
+				create = true;
+			}
+			break;
+		case HARD:
+			filename += "Ranking_HARD.dat";
+			if (FileExists(RESOURCE_FILE(filename))) {
+				std::cout << "ABRIENDO RANKING_HARD" << std::endl;
+			}
+			else {
+				create = true;
+			}
+			break;
+		}
+
+		//si el archivo no existe, creamos uno vacio
+		if (create = true) {
+			/*cout << "trampa!" << endl;
+			system("pause");*/
+			ofstream createFile(RESOURCE_FILE(filename), std::ios::out | std::ios::binary);
+
+			if (!createFile.is_open()) {
+				throw std::exception("[RankingFile] System was not able to open the file");
+			}
+
+			createFile.write(reinterpret_cast<char *>(&rank.list_rank), sizeof(rank.list_rank));
+
+			createFile.close();
+		}
+		
+		
+//		LEEMOS EL CONTENIDO DEL ARCHIVO
+
+
+		ifstream myInputFile(RESOURCE_FILE(filename), std::ios::in | std::ios::binary);
+
+		if (!myInputFile.is_open()) {
+			throw std::exception("[RankingFile] System was not able to open the file");
+		}
+
+		if (myInputFile.good()) {
+			cout << "all good" << endl;
+		}
+		else {
+			cout << "no va" << endl;
+			if (myInputFile.fail()) cout << "bit fail activo" << endl;
+			if (myInputFile.eof()) cout << "bit eof activo" << endl;
+			if (myInputFile.bad()) cout << "bit bad activo" << endl;
+		}
+
+		myInputFile.read(reinterpret_cast<char *>(&prueba.list_rank), sizeof(blank_rank.list_rank));
+
+		myInputFile.close();
+	
+		std::cout << "-----------------------RANKING-----------------------" << std::endl;
+
+		for (auto it = prueba.list_rank.rbegin(); it != prueba.list_rank.rend(); ++it) {
+			std::cout << "Score: " << it->first << " Name: " << it->second << std::endl;
+		}
+		
+		//__________________________________________
+
+		blank_rank.askPersonName();
+
+		prueba.list_rank.insert(std::pair<int, std::string>(score, { blank_rank.getName() }));
 
 		//borramos el primer elemento ya que se almacenan en orden descendente
-		rank.list_rank.erase(rank.list_rank.begin()->first);
-
-		//printamos los elementos en orden ascendente
-		for (auto it = rank.list_rank.rbegin(); it != rank.list_rank.rend(); ++it) {
+		
+		for (auto it = prueba.list_rank.rbegin(); it != prueba.list_rank.rend(); ++it) {
 			std::cout << "Score: " << it->first << " Name: " << it->second << std::endl;
 		}
-		
-		myFile.open(RESOURCE_FILE(filename), std::ios::out | std::ios::binary);
 
-		myFile.write(reinterpret_cast<char *>(&rank.list_rank), sizeof(rank.list_rank));
-		
-		myFile.close();
+	
+		system("pause");
+		cout << "HOLAAAAAAA -------------->" << prueba.list_rank.begin()->first << endl;
+	
+
+		prueba.list_rank.erase(666);
+
+		//PRINTEAMOS SU CONTENIDO
+
+		std::cout << "-----------------------RANKING-----------------------" << std::endl;
+
+		for (auto it = prueba.list_rank.rbegin(); it != prueba.list_rank.rend(); ++it) {
+			std::cout << "Score: " << it->first << " Name: " << it->second << std::endl;
+		}
+
+		ofstream myOutputFile2(RESOURCE_FILE(filename), std::ios::out | std::ios::binary);
+
+		if (!myOutputFile2.is_open()) {
+			throw std::exception("[RankingFile] System was not able to open the file");
+		}
+
+		myOutputFile2.write(reinterpret_cast<char *>(&prueba.list_rank), sizeof(prueba.list_rank));
+
+		myOutputFile2.close();
+
+		////LEER DE NUEVO
+		//myInputFile.open(RESOURCE_FILE(filename), std::ios::in | std::ios::binary);
+
+		//if (!myInputFile.is_open()) {
+		//	throw std::exception("[RankingFile] System was not able to open the file");
+		//}
+
+		//if (myInputFile.good()) {
+		//	cout << "all good" << endl;
+		//}
+		//else {
+		//	cout << "no va" << endl;
+		//	if (myInputFile.fail()) cout << "bit fail activo" << endl;
+		//	if (myInputFile.eof()) cout << "bit eof activo" << endl;
+		//	if (myInputFile.bad()) cout << "bit bad activo" << endl;
+		//}
+
+		//myInputFile.read(reinterpret_cast<char *>(&prueba.list_rank), sizeof(blank_rank.list_rank));
+
+		//myInputFile.close();
+
+		//std::cout << "-----------------------RANKING2-----------------------" << std::endl;
+
+		//for (auto it = prueba.list_rank.rbegin(); it != prueba.list_rank.rend(); ++it) {
+		//	std::cout << "Score: " << it->first << " Name: " << it->second << std::endl;
+		//}
+
+
+		//------------------------------------------------------------
+
+
+
+		/*myOutputFile.open(RESOURCE_FILE(filename), std::ios::out | std::ios::binary);
+
+		myOutputFile.write(reinterpret_cast<char *>(&rank.list_rank), sizeof(rank.list_rank));
+
+		myOutputFile.close();
+
+		myInputFile.open(RESOURCE_FILE(filename), std::ios::in | std::ios::binary);
+
+		if (!myInputFile.is_open()) {
+			throw std::exception("[RankingFile] System was not able to open the file");
+		}
+
+		myInputFile.read(reinterpret_cast<char *>(&rank2.list_rank), sizeof(rank2.list_rank));
+
+		myInputFile.close();
+
+		for (auto it = rank2.list_rank.rbegin(); it != rank2.list_rank.rend(); ++it) {
+			std::cout << "Score: " << it->first << " Name: " << it->second << std::endl;
+		}
+
+		std::cout << "---------------------------------------------------------" << std::endl;*/
+
+		//rank.list_rank.insert(std::pair<int, std::string>(score, { rank.getName() }));
+
+		////borramos el primer elemento ya que se almacenan en orden descendente
+		//rank.list_rank.erase(rank.list_rank.begin()->first);
+
+		////printamos los elementos en orden ascendente
+		//for (auto it = rank.list_rank.rbegin(); it != rank.list_rank.rend(); ++it) {
+		//	std::cout << "Score: " << it->first << " Name: " << it->second << std::endl;
+		//}
+		//
+		//myOutputFile.open(RESOURCE_FILE(filename), std::ios::out | std::ios::binary);
+
+		//myOutputFile.write(reinterpret_cast<char *>(&rank.list_rank), sizeof(rank.list_rank));
+
+		//myOutputFile.close();
+
+		////---
+
+		//myInputFile.open(RESOURCE_FILE(filename), std::ios::in | std::ios::binary | std::ios::ate);
+
+		//if (!myInputFile.is_open()) {
+		//	throw std::exception("[RankingFile] System was not able to open the file");
+		//}
+
+		//myInputFile.read(reinterpret_cast<char *>(&rank2.list_rank), sizeof(rank2.list_rank));
+
+		//myInputFile.close();
+
+		//for (auto it = rank2.list_rank.rbegin(); it != rank2.list_rank.rend(); ++it) {
+		//	std::cout << "Score: " << it->first << " Name: " << it->second << std::endl;
+		//}
 
 		system("pause");
 
 	}
-
-	//-------------------------------------------------
-
-	//static Score SetScores(int gameDif, int sizeOfList, int score) {
-	//	std::string filename = "cfg/";
-	//	Score s;
-	//	s.askPersonName();
-	//	s.setScore(score);
-	//	int sizeScore = sizeof(Score);
-	//	std::ofstream myInputFile;
-
-
-	//	switch (gameDif) {
-	//	case EASY:
-	//		std::cout << "ABRIENDO RANKING_EASY" << std::endl;
-	//		filename += "Ranking_EASY.dat";
-	//		break;
-	//	case MEDIUM:
-	//		std::cout << "ABRIENDO RANKING_MEDIUM" << std::endl;
-	//		filename += "Ranking_MEDIUM.dat";
-	//		break;
-	//	case HARD:
-	//		std::cout << "ABRIENDO RANKING_HARD" << std::endl;
-	//		filename += "Ranking_HARD.dat";
-	//		break;
-	//	}
-
-	//	myInputFile.open(RESOURCE_FILE(filename), std::ios::out | std::ios::binary | std::ios::ate);
-
-	//	if (!myInputFile.is_open()) {
-	//		throw std::exception("[RankingFile] System was not able to open the file");
-	//	}
-
-	//	myInputFile.write(reinterpret_cast<char *>(&s), sizeScore);
-
-	//	//myInputFile.clear();
-
-	//	myInputFile.close();
-	//	std::cout << "DOC CERRADO" << std::endl;
-	//}
-
-	//static void ReadAndPrintScores(int gameDif, int score) {
-	//	std::string filename = "cfg/";
-	//	std::ifstream myFile;
-
-	//	std::streampos fileSize;
-	//	Score s;
-	//	s.askPersonName();
-	//	s.setScore(score);
-	//	int sizeScore = sizeof(Score);
-
-	//	switch (gameDif) {
-	//	case EASY:
-	//		std::cout << "ABRIENDO RANKING_EASY" << std::endl;
-	//		filename += "Ranking_EASY.dat";
-	//		break;
-	//	case MEDIUM:
-	//		std::cout << "ABRIENDO RANKING_MEDIUM" << std::endl;
-	//		filename += "Ranking_MEDIUM.dat";
-	//		break;
-	//	case HARD:
-	//		std::cout << "ABRIENDO RANKING_HARD" << std::endl;
-	//		filename += "Ranking_HARD.dat";
-	//		break;
-	//	}
-
-
-	//	//Read the file
-	//	myFile.open(RESOURCE_FILE(filename), std::ios::in | std::ios::binary);
-	//	if (!myFile.is_open()) {
-	//		throw std::exception("[ReadAndPrintScores] System was not able to open the file");
-	//	}
-
-	//	//-----------------------------
-	//	Score totalScores[11];
-
-	//	//fullfill the totalScores with empty scores
-	//	for (int i = 0; i < 11; i++) {
-	//		totalScores[i].setName("-");
-	//		totalScores[i].setScore(0);
-	//	}
-	//	for (int i = 0; i < 10; i++) {
-	//		myFile.read(reinterpret_cast<char *>(&totalScores[i]), sizeScore);
-	//		//std::cout << totalScores[i] << std::endl;
-	//	}
-
-	//	//close the file
-	//	myFile.close();
-
-
-	//	//SORTING ALGORITHM
-	//	totalScores[10] = s;
-
-	//	int top = 10;
-	//	int index;
-	//	int swaps = 1;
-
-	//	// sort the scores 
-	//	while (top != 0 && swaps != 0) {
-	//		// set the swap variable to 0, because we haven't made any swaps yet.
-	//		swaps = 0;
-
-	//		// perform one iteration
-	//		for (index = 0; index < top; index++) {
-	//			// swap the indexes if necessary
-	//			if (CompareScore(totalScores[index].getScore(), totalScores[index + 1].getScore()) > 0) {
-	//				Swap(totalScores[index], totalScores[index + 1]);
-	//				swaps++;
-	//			}
-	//		}
-	//		top--;
-	//	}
-
-	//	//--------------------------------------------------------------
-	//	std::ofstream myInputFile;
-
-	//	myInputFile.open(RESOURCE_FILE(filename), std::ios::in | std::ios::binary);
-
-	//	if (!myInputFile.is_open()) {
-	//		throw std::exception("[RankingFile] System was not able to open the file");
-	//	}
-
-	//	for (int i = 0; i < 10; i++) {
-	//		std::cout << totalScores[i] << std::endl;
-	//		myInputFile.write(reinterpret_cast<char *>(&totalScores[i]), sizeScore);			
-	//	}
-	//	
-	//	myInputFile.close();
-
-		//WTF?
-		/*for (int i = 0; i < 10; i++) {
-			myFile.read(reinterpret_cast<char *>(&totalScores[i]), sizeScore);
-			std::cout << totalScores[i] << std::endl;
-		}*/
-
-		////open again the file to save the ranking
-		//myFile.open(RESOURCE_FILE(filename), std::ios::in | std::ios::binary);
-		//if (!myFile.is_open()) {
-		//	throw std::exception("[ReadAndPrintScores] System was not able to open the file");
-		//}
-
-		////save the sorted scores
-		//for (int i = 0; i < 11; i++) {
-		//	myFile.write(reinterpret_cast<char *>(&totalScores[i]), sizeScore);
-		//	std::cout << totalScores[i] << std::endl;
-		//}
-
 }

@@ -81,11 +81,6 @@ void GamePlaying::Update(void) {
 	//movimiento de la cabeza
 	s_snake->Update();
 	
-	//Comprobar si la serpiente sigue viva
-	if (s_snake->GetDead()) { //take out 1 live
-		RestartLevel();
-	}
-
 	//set grow to false to later prove if snake has grown
 	s_snake->setGrow(false);
 
@@ -98,6 +93,11 @@ void GamePlaying::Update(void) {
 
 		//hacer crecer la serpiente
 		s_snake->addBody();
+	}
+
+	//Comprobar si la serpiente sigue viva
+	if (s_snake->GetDead()) { //take out 1 live
+		RestartLevel();
 	}
 		
 	
@@ -181,8 +181,13 @@ void GamePlaying::RestartLevel(void) {
 		//restore initial parameters	
 		s_snake->SetScore(0);
 		s_snake->SetDirection(RIGHT);
-		s_snake->SetPosition({ 5,5 });
-		s_snake->SetLastPosition({ 4,4 });
+		s_snake->_serpiente[0] = Position{ 5,5 }; //cabeza
+		s_snake->_serpiente[1] = Position{ 5,4 };
+		s_snake->_serpiente[2] = Position{ 5,3 };
+		s_snake->_serpiente[3] = Position{ 5,2 }; //blanco
+		s_snake->SetBodySize(4);
+		s_snake->_serpiente.resize(4);
+		//s_snake->SetLastPosition({ 5,4 });
 
 		//restore initial parameters
 		foodcounter = 1;

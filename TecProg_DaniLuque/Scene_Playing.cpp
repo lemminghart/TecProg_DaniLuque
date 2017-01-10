@@ -43,6 +43,8 @@ void GamePlaying::OnEntry(void) {
 	foodcounter = 1;
 	score = 0;
 	nivel = 0; //lvl 1
+	foodIncrement = m_leveldata.NumFoodIncr;
+	foodBase = m_leveldata.NumFoodInit;
 	time = m_leveldata.time;
 
 	//inicializar el mapa
@@ -71,6 +73,10 @@ void GamePlaying::OnEntry(void) {
 }
 
 void GamePlaying::OnExit(void) {
+	Println("-------------------------GAME OVER------------------------------");
+	Println("SCORE: ", s_snake->GetScore());
+	Println("NIVEL ALCANZADO: ", nivel);
+	Println("------------------------FELICIDADES!----------------------------");
 	delete s_snake;
 	delete f_food;
 	Println("LEAVING_GAME");
@@ -116,6 +122,14 @@ void GamePlaying::Update(void) {
 		RestartLevel();
 	}
 		
+	//superar nivel
+	if (foodcounter > foodBase) {
+		Println("LVL UP!");
+		nivel++;
+		foodcounter = 1;
+		foodBase = m_leveldata.NumFoodInit + foodIncrement * nivel;
+	}
+
 	//Time manager
 	if (percent > 1) {
 		if (time > 1) {
@@ -212,26 +226,27 @@ void GamePlaying::RestartLevel(void) {
 				}
 			}
 		}
-		/*cellData[f_food->GetPosition().x][f_food->GetPosition().y].objectID = ObjectID::CELL_EMPTY;
-		cellData[s_snake->GetLastPosition().x][s_snake->GetLastPosition().y].objectID = ObjectID::CELL_EMPTY;*/
 
-		//restore initial parameters	
-		s_snake->SetScore(0);
-		s_snake->SetDirection(RIGHT);
-		s_snake->_serpiente[0] = Position{ 5,5 }; //cabeza
-		s_snake->_serpiente[1] = Position{ 5,4 };
-		s_snake->_serpiente[2] = Position{ 5,3 };
-		s_snake->_serpiente[3] = Position{ 5,2 }; //blanco
-		s_snake->SetBodySize(4);
-		s_snake->_serpiente.resize(4);
-		//s_snake->SetLastPosition({ 5,4 });
+			//restore initial parameters	
+			//s_snake->SetScore(0); //No me parece apropiado
+		//reiniciamos cuerpo
+			s_snake->SetDirection(RIGHT);
+			s_snake->_serpiente[0] = Position{ 5,5 }; //cabeza
+			s_snake->_serpiente[1] = Position{ 5,4 };
+			s_snake->_serpiente[2] = Position{ 5,3 };
+			s_snake->_serpiente[3] = Position{ 5,2 }; //blanco
+			s_snake->SetBodySize(4);
+			s_snake->_serpiente.resize(4);
+			//s_snake->SetLastPosition({ 5,4 });
 
-		//restore initial parameters
-		time = m_leveldata.time;
-		foodcounter = 1;
-		score = 0;
-		s_snake->SetDead(false);
-		//aqui va velocidad inicial snake
+			//restore initial parameters
+			time = m_leveldata.time;
+			foodcounter = 1;
+			//score = 0;
+			s_snake->SetDead(false);
+			//aqui va velocidad inicial snake
+			s_snake->SetSpeed();
+
 	}
 	else { //snake is dead
 		score = s_snake->GetScore();

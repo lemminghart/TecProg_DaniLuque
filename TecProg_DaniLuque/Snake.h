@@ -46,6 +46,7 @@ public:
 	void SetDirection(Direction direction);
 	void SetDead(bool state);
 	void setGrow(bool grow);
+	void SetSpeed();
 
 	Position GetPosition(void);
 	Position GetLastPosition(void);

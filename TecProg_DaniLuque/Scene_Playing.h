@@ -30,12 +30,15 @@ private:
 	Sprite m_background;
 
 	int foodcounter;
+	int foodIncrement;
+	int foodBase;
 	static int score;
 	int nivel;
 	int incrNivel;
 	int time;
 	float percent;
 
+	
 	struct Cell : public Sprite { Sprite content; } **cellData; // Cell structure to store its position, its texture and its content (wether is empty or not)
 
 	Position food_pos;

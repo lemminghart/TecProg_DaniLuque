@@ -21,7 +21,7 @@ Snake::Snake(LevelData &lvldata) {
 	s_leveldata = lvldata;
 
 	s_speed = s_leveldata.VInit;
-	lives = 2;
+	lives = 3;
 	bodySize = 4;
 	s_score = 0;
 	_serpiente.resize(bodySize);
@@ -255,6 +255,10 @@ void Snake::SetBodySize(int size) {
 
 void Snake::setGrow(bool _grow) {
 	grow = _grow;
+}
+
+void Snake::SetSpeed() {
+	s_speed = s_leveldata.VInit;
 }
 
 //GETTERS

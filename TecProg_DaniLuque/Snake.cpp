@@ -42,19 +42,19 @@ Snake::~Snake(void) {
 void Snake::Update(void) {
 	//static MouseCoords mouseCoords(0, 0);
 
-	if (IM.IsKeyUp<KEY_BUTTON_DOWN>() && _direction != UP) {
+	if (IM.IsKeyUp<KEY_BUTTON_DOWN>() && _lastDirection != UP) {
 		_direction = DOWN;
 		//Go();
 	}
-	if (IM.IsKeyUp<KEY_BUTTON_UP>() && _direction != DOWN) {
+	if (IM.IsKeyUp<KEY_BUTTON_UP>() && _lastDirection != DOWN) {
 		_direction = UP;
 		//Go();
 	}
-	if (IM.IsKeyUp<KEY_BUTTON_LEFT>() && _direction != RIGHT){
+	if (IM.IsKeyUp<KEY_BUTTON_LEFT>() && _lastDirection != RIGHT){
 		_direction = LEFT;
 		//Go();
 	}
-	if (IM.IsKeyUp<KEY_BUTTON_RIGHT>() && _direction != LEFT){
+	if (IM.IsKeyUp<KEY_BUTTON_RIGHT>() && _lastDirection != LEFT){
 		_direction = RIGHT;
 		//Go();
 	}
@@ -156,25 +156,58 @@ void Snake::Go(void) {
 		Println("---------SWITCH GO FAIL-----------");
 		break;
 	}
+	_lastDirection = _direction;
 }
 
 //ACTUALIZAR PARA CONTROLAR COLISION CON SU PROPIO CUERPO
 bool Snake::CheckNeighbours(void) {
+	
+	
 	switch (_direction) {
 	case DOWN:
-		if ((_serpiente[0].x + 1) > 0 && (_serpiente[0].x + 1) < (s_leveldata.rows - 1)) return true;
+		if ((_serpiente[0].x + 1) > 0 && (_serpiente[0].x + 1) < (s_leveldata.rows - 1)) {
+			for (int i = 1; i < _serpiente.size()-1; i++) {
+				if (_serpiente[0].x + 1== _serpiente[i-1].x && _serpiente[0].y == _serpiente[i-1].y) {
+					return false;
+				}
+			}
+		return true;
+		}
 		else return false;
 		break;
 	case UP:
-		if ((_serpiente[0].x - 1) > 0 && (_serpiente[0].x - 1) < (s_leveldata.rows - 1)) return true;
+		if ((_serpiente[0].x - 1) > 0 && (_serpiente[0].x - 1) < (s_leveldata.rows - 1)) {
+			for (int i = 1; i < _serpiente.size() - 1; i++) {
+				if (_serpiente[0].x - 1== _serpiente[i-1].x && _serpiente[0].y == _serpiente[i-1].y) {
+					return false;
+				}
+			}
+			return true;
+		}
 		else return false;
 		break;
 	case LEFT:
-		if ((_serpiente[0].y - 1) > 0 && (_serpiente[0].y - 1) < (s_leveldata.columns - 1)) return true;
+		if ((_serpiente[0].y - 1) > 0 && (_serpiente[0].y - 1) < (s_leveldata.columns - 1)) {
+			for (int i = 1; i < _serpiente.size() - 1; i++) {
+				if (_serpiente[0].x == _serpiente[i - 1].x && _serpiente[0].y - 1== _serpiente[i - 1].y) {
+					return false;
+				}
+			
+			}
+			return true;
+		}
 		else return false;
 		break;
 	case RIGHT:
-		if ((_serpiente[0].y + 1) > 0 && (_serpiente[0].y + 1) < (s_leveldata.columns - 1)) return true;
+		if ((_serpiente[0].y + 1) > 0 && (_serpiente[0].y + 1) < (s_leveldata.columns - 1)) {
+			for (int i = 1; i < _serpiente.size() - 1; i++) {
+				if (_serpiente[0].x == _serpiente[i - 1].x && _serpiente[0].y + 1 == _serpiente[i - 1].y) {
+					return false;
+				}
+				
+			}
+			return true;
+		}
 		else return false;
 		break;
 	default:

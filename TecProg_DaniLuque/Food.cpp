@@ -14,9 +14,12 @@ Food::Food(LevelData &lvldata, int foodNumber, Snake *snake) {
 
 	f_position.x = rand() % ((f_leveldata.rows - 2) - 0) + 1;
 	f_position.y = rand() % ((f_leveldata.columns - 2) - 0) + 1;
-	while (f_position.x == f_snake->GetPosition().x && f_position.x == f_snake->GetPosition().y) {
-		f_position.x = rand() % ((f_leveldata.rows - 2) - 0) + 1;
-		f_position.y = rand() % ((f_leveldata.columns - 2) - 0) + 1;
+	for (int i = 0; i < f_snake->_serpiente.size(); i++) {
+		if (f_position.x == f_snake->_serpiente[i].x && f_position.y == f_snake->_serpiente[i].y) {
+			f_position.x = rand() % ((f_leveldata.rows - 2) - 0) + 1;
+			f_position.y = rand() % ((f_leveldata.columns - 2) - 0) + 1;
+			i = 0;
+		}
 	}
 
 }
@@ -31,7 +34,7 @@ void Food::Spawn(int foodnumber) {
 	f_position.x = rand() % ((f_leveldata.rows - 2) - 0) + 1;
 	f_position.y = rand() % ((f_leveldata.columns - 2) - 0) + 1;
 	for (int i = 0; i < f_snake->_serpiente.size(); i++) {
-		if (f_position.x == f_snake->_serpiente[i].x && f_position.x == f_snake->_serpiente[i].y) {
+		if (f_position.x == f_snake->_serpiente[i].x && f_position.y== f_snake->_serpiente[i].y) {
 			f_position.x = rand() % ((f_leveldata.rows - 2) - 0) + 1;
 			f_position.y = rand() % ((f_leveldata.columns - 2) - 0) + 1;
 			i = 0;

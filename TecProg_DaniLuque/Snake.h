@@ -6,7 +6,7 @@ struct LevelData {
 	int rows;
 	int columns;
 	int time;
-	int VInit;
+	float VInit;
 	int NumFoodInit;
 	int NumFoodIncr;
 };
@@ -33,6 +33,8 @@ public:
 	void Go(void);
 	bool CheckNeighbours(void);
 	void addBody(void);
+	void UpdateSpeed(void);
+	void DowngradeSpeed(void);
 	//change
 
 	//setters & getters
@@ -61,11 +63,10 @@ public:
 private:
 	int lives;
 	int bodySize;
-	int s_speed;
+	float s_speed;
 	int s_score;
 	bool dead;
 	bool grow;
-	
 	
 	
 	Direction _direction;

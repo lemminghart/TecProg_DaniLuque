@@ -20,6 +20,7 @@ Snake::Snake() {
 Snake::Snake(LevelData &lvldata) {
 	s_leveldata = lvldata;
 
+	s_speed = s_leveldata.VInit;
 	lives = 2;
 	bodySize = 4;
 	s_score = 0;
@@ -58,13 +59,22 @@ void Snake::Update(void) {
 		//Go();
 	}
 	
-	
+		
 	//aqui se regula la velocidad de la serpiente
-	if (percent > 0.2) {
+	if (percent > s_speed) {
 		Go();
 		percent = 0;
+		//Println("speed: ", s_speed);
 	}
 	percent += TM.GetDeltaTime();
+}
+
+void Snake::UpdateSpeed() {
+	s_speed = s_speed - 0.005;
+}
+
+void Snake::DowngradeSpeed() {
+	s_speed = s_speed + 0.005;
 }
 
 void Snake::Draw(void) {

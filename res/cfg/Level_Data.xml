@@ -4,7 +4,7 @@
 		<rows>20</rows>
 		<columns>25</columns>
 		<time>400</time>
-		<VInit>1</Vinit>
+		<VInit>0.7</Vinit>
 		<NumFoodInit>5</NumFoodInit>
 		<NumFoodIncr>1</NumFoodIncr>
 	</easy>
@@ -12,16 +12,16 @@
 		<rows>15</rows>
 		<columns>20</columns>
 		<time>300</time>
-		<VInit>2</Vinit>
-		<NumFoodInit>10</NumFoodInit>
+		<VInit>0.4</Vinit>
+		<NumFoodInit>6</NumFoodInit>
 		<NumFoodIncr>2</NumFoodIncr>
 	</medium>
 	<hard>
-		<rows>10</rows>
+		<rows>15</rows>
 		<columns>15</columns>
 		<time>100</time>
-		<VInit>3</Vinit>
-		<NumFoodInit>15</NumFoodInit>
+		<VInit>0.2</Vinit>
+		<NumFoodInit>7</NumFoodInit>
 		<NumFoodIncr>4</NumFoodIncr>
 	</hard>  
 </document>

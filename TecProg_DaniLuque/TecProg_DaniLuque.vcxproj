@@ -124,7 +124,6 @@
     <ClInclude Include="InputManager.hh" />
     <ClInclude Include="IOManager.hh" />
     <ClInclude Include="Logger.hh" />
-    <ClInclude Include="Ranking_list.h" />
     <ClInclude Include="Renderer.hh" />
     <ClInclude Include="Resource.hh" />
     <ClInclude Include="Scene.hh" />
@@ -143,7 +142,6 @@
     <ClCompile Include="Food.cpp" />
     <ClCompile Include="GameMenu.cc" />
     <ClCompile Include="main.cc" />
-    <ClCompile Include="Ranking_list.cpp" />
     <ClCompile Include="Scene_Playing.cpp" />
     <ClCompile Include="Scene_Ranking.cpp" />
     <ClCompile Include="Score.cpp" />

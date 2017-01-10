@@ -42,6 +42,8 @@ void GamePlaying::OnEntry(void) {
 	//inicializar variables
 	foodcounter = 1;
 	score = 0;
+	nivel = 0; //lvl 1
+	time = m_leveldata.time;
 
 	//inicializar el mapa
 	cellData = new Cell*[m_leveldata.rows];
@@ -65,8 +67,7 @@ void GamePlaying::OnEntry(void) {
 	//inicializar serpiente
 	s_snake = new Snake(m_leveldata);
 	//inicializar comida
-	f_food = new Food(m_leveldata, foodcounter);
-
+	f_food = new Food(m_leveldata, foodcounter, s_snake);
 }
 
 void GamePlaying::OnExit(void) {
@@ -89,8 +90,23 @@ void GamePlaying::Update(void) {
 		std::cout << "EAT FOOD!" << std::endl;
 		s_snake->SetScore(score += f_food->GetValue());
 		foodcounter++;
-		f_food->Spawn(*s_snake, foodcounter);
 
+		
+		//spawneamos nueva comida
+		
+		/*food_pos.x = rand() % ((m_leveldata.rows - 2) - 0) + 1;
+		food_pos.y = rand() % ((m_leveldata.columns - 2) - 0) + 1;
+		for (int i = 0; i < s_snake->_serpiente.size(); i++) {
+			if (food_pos.x == s_snake->_serpiente[i].x && food_pos.y == s_snake->_serpiente[i].y) {
+				food_pos.x = rand() % ((m_leveldata.rows - 2) - 0) + 1;
+				food_pos.y = rand() % ((m_leveldata.columns - 2) - 0) + 1;
+				i = 0;
+			}
+		}
+		f_food->SetPosition(food_pos);*/
+		f_food->Spawn(foodcounter);
+
+		s_snake->UpdateSpeed();
 		//hacer crecer la serpiente
 		s_snake->addBody();
 	}
@@ -100,8 +116,29 @@ void GamePlaying::Update(void) {
 		RestartLevel();
 	}
 		
+	//Time manager
+	if (percent > 1) {
+		if (time > 1) {
+			time--;
+			Println("time: ",time);
+		}
+		else {
+			RestartLevel();
+		}
+		//Println(percent);
+		percent = 0;
+	}
+	percent += TM.GetDeltaTime();
 	
 	//KEY INPUTS
+	if (IM.IsKeyUp<'n'>()) {
+		s_snake->UpdateSpeed();
+		Println("more speed");
+	}
+	if (IM.IsKeyUp<'m'>()) {
+		s_snake->DowngradeSpeed();
+		Println("Less speed");
+	}
 	if (IM.IsKeyUp<'d'>()) {
 		Println("----------------HEADDATA-----------\n", "X: ", s_snake->_serpiente[0].x,"\n",
 			"Y: ", s_snake->_serpiente[0].y);
@@ -118,10 +155,10 @@ void GamePlaying::Update(void) {
 		Println("----------------RESTARTING LEVEL-----------\n");
 		RestartLevel();
 	}
-	if (IM.IsKeyUp<'x'>()) {
+	if (IM.IsKeyHold<'x'>()) {
 		Println("----------------RESPAWNING A FRUIT-----------\n");
 		cellData[f_food->GetPosition().x][f_food->GetPosition().y].objectID = ObjectID::CELL_EMPTY;
-		f_food->Spawn(*s_snake, foodcounter);
+		f_food->Spawn(foodcounter);
 	}
 	if (IM.IsKeyUp<'k'>()) {
 		Println("---------COMMANDS:---------\n", "- Z to restart level\n", "- S to print gameData\n", "- X reposition the fruit\n", "- ESC to go back\n");
@@ -155,7 +192,7 @@ void GamePlaying::Draw(void) {
 	cellData[f_food->GetPosition().x][f_food->GetPosition().y].objectID = ObjectID::FOOD_APPLE;
 
 	
-
+	cellData[0][0].objectID = ObjectID::CELL_WALL;
 	//imprime el contenido de la matriz
 	for (int i = 0; i < m_leveldata.rows; ++i) for (int j = 0; j < m_leveldata.columns; ++j) cellData[i][j].Draw();
 
@@ -190,6 +227,7 @@ void GamePlaying::RestartLevel(void) {
 		//s_snake->SetLastPosition({ 5,4 });
 
 		//restore initial parameters
+		time = m_leveldata.time;
 		foodcounter = 1;
 		score = 0;
 		s_snake->SetDead(false);

@@ -19,7 +19,7 @@ Ranking::~Ranking() {
 void Ranking::OnEntry(void) {
 	score = GamePlaying::GetScore();
 
-//	IOManager::ManageRanking(GameMenu::gameDifficulty, score);
+	IOManager::ManageRanking(GameMenu::gameDifficulty, score);
 	
 }
 void Ranking::OnExit(void) {

@@ -61,6 +61,7 @@ void Snake::Update(void) {
 	
 		
 	//aqui se regula la velocidad de la serpiente
+	//cada 1 segundo entra en el bucle
 	if (percent > s_speed) {
 		Go();
 		percent = 0;

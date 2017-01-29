@@ -122,7 +122,7 @@ namespace IOManager {
 
 		bool create;
 		
-		score = 5500;
+		//score = 5500;
 
 		//ESCOGEMOS EL ARCHIVO QUE QUEREMOS ABRIR (SEGUN DIFICULTAD)
 		//SI NO EXISTE LO INICIALIZAMOS CON SCORE: 0 NAME: " - "
@@ -215,7 +215,7 @@ namespace IOManager {
 		Data temp;
 		for (int i = 0; i < 11 - 1; i++) {
 			for (int j = i + 1; j < 11; j++) {
-				if (read_ranking_list[i].puntuacion < read_ranking_list[j].puntuacion) {
+				if (read_ranking_list[i].puntuacion <= read_ranking_list[j].puntuacion) {
 					temp = read_ranking_list[i];
 					read_ranking_list[i] = read_ranking_list[j];
 					read_ranking_list[j] = temp;

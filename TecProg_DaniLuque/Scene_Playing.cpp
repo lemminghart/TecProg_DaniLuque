@@ -128,9 +128,11 @@ void GamePlaying::Update(void) {
 		nivel++;
 		foodcounter = 1;
 		foodBase = m_leveldata.NumFoodInit + foodIncrement * nivel;
+		time = m_leveldata.time;
 	}
 
 	//Time manager
+	//cada 1 segundo entra en el bucle
 	if (percent > 1) {
 		if (time > 1) {
 			time--;
@@ -209,6 +211,35 @@ void GamePlaying::Draw(void) {
 	cellData[0][0].objectID = ObjectID::CELL_WALL;
 	//imprime el contenido de la matriz
 	for (int i = 0; i < m_leveldata.rows; ++i) for (int j = 0; j < m_leveldata.columns; ++j) cellData[i][j].Draw();
+
+	//time
+	GUI::DrawTextBlended<FontID::ARIAL>("Time: ",
+	{ int(W.GetWidth()*.2f), int(W.GetHeight()*.1f), 1, 1 },
+	{ 255, 255, 255 });
+	GUI::DrawTextBlended<FontID::ARIAL>(std::to_string(time),
+	{ int(W.GetWidth()*.3f), int(W.GetHeight()*.1f), 1, 1 },
+	{ 255, 255, 255 });
+	//level
+	GUI::DrawTextBlended<FontID::ARIAL>("Level: ",
+	{ int(W.GetWidth()*.7f), int(W.GetHeight()*.1f), 1, 1 },
+	{ 255, 255, 255 });
+	GUI::DrawTextBlended<FontID::ARIAL>(std::to_string(nivel+1),
+	{ int(W.GetWidth()*.8f), int(W.GetHeight()*.1f), 1, 1 },
+	{ 255, 255, 255 });
+	//lives
+	GUI::DrawTextBlended<FontID::ARIAL>("Lives: ",
+	{ int(W.GetWidth()*.2f), int(W.GetHeight()*.95f), 1, 1 },
+	{ 255, 255, 255 });
+	GUI::DrawTextBlended<FontID::ARIAL>(std::to_string(s_snake->GetNumLives()),
+	{ int(W.GetWidth()*.3f), int(W.GetHeight()*.95f), 1, 1 },
+	{ 255, 255, 255 });
+	//score
+	GUI::DrawTextBlended<FontID::ARIAL>("Score: ",
+	{ int(W.GetWidth()*.7f), int(W.GetHeight()*.95f), 1, 1 },
+	{ 255, 255, 255 });
+	GUI::DrawTextBlended<FontID::ARIAL>(std::to_string(score),
+	{ int(W.GetWidth()*.9f), int(W.GetHeight()*.95f), 1, 1 },
+	{ 255, 255, 255 });
 
 }
 

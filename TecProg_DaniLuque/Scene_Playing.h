@@ -29,6 +29,7 @@ public:
 private:
 	Sprite m_background;
 
+	//atributos de nivel
 	int foodcounter;
 	int foodIncrement;
 	int foodBase;
@@ -37,6 +38,9 @@ private:
 	int incrNivel;
 	int time;
 	float percent;
+
+	int saved_foodcounter;
+	int saved_nivel;
 
 	
 	struct Cell : public Sprite { Sprite content; } **cellData; // Cell structure to store its position, its texture and its content (wether is empty or not)

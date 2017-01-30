@@ -189,12 +189,12 @@ namespace IOManager {
 
 		myInputFile.close();
 
-		cout << "--------------------------------------------------------------------" << endl;
+		/*cout << "--------------------------------------------------------------------" << endl;
 
 		for (int i = 0; i < 10; i++) {
 			cout << "Nombre: " << read_ranking_list[i].nombre << endl;
 			cout << "Score: " << read_ranking_list[i].puntuacion << endl;
-		}
+		}*/
 
 		//añadimos la score y nombre del jugador
 		//Como está ordenado el ranking, substituimos la nueva score por la numero 11
@@ -224,7 +224,7 @@ namespace IOManager {
 		}
 		
 		
-		cout << "--------------------------------------------------------------------" << endl;
+		cout << "------------------------------- RANKING ----------------------------" << endl;
 
 		for (int i = 0; i < 10; i++) {
 			cout << "Nombre: " << read_ranking_list[i].nombre << endl;

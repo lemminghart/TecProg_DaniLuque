@@ -46,7 +46,15 @@ void Ranking::Update(void){
 void Ranking::Draw(void) {
 	m_background.Draw();
 
-	GUI::DrawTextBlended<FontID::ARIAL>("RANKING SCENE",
-	{ W.GetWidth() >> 1, int(W.GetHeight()*.2f), 1, 1 },
+	GUI::DrawTextBlended<FontID::ARIAL>("RANKING",
+	{ int(W.GetWidth()*.4f), int(W.GetHeight()*.2f), 2, 2 },
 	{ 115, 0, 180 });
+
+	GUI::DrawTextBlended<FontID::ARIAL>("(See console for ranking)",
+	{ int(W.GetWidth()*.5f), int(W.GetHeight()*.5f), 1, 1 },
+	{ 255, 255, 255 });
+
+	GUI::DrawTextBlended<FontID::ARIAL>("Press ESC to return to Main Menu",
+	{ int(W.GetWidth()*.5f), int(W.GetHeight()*.9f), 1, 1 },
+	{ 255, 255, 255 });
 }

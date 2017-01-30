@@ -38,9 +38,10 @@ private:
 	int incrNivel;
 	int time;
 	float percent;
+	float percent_2;
+	int spawn_counter;
 
-	int saved_foodcounter;
-	int saved_nivel;
+	int saved_level;
 
 	
 	struct Cell : public Sprite { Sprite content; } **cellData; // Cell structure to store its position, its texture and its content (wether is empty or not)

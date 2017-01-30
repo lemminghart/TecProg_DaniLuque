@@ -15,6 +15,7 @@ using namespace Logger;
 
 #define CELL_WIDTH 20
 #define CELL_HEIGHT 20
+#define SPAWN_TIME 3
 
 GamePlaying::GamePlaying(void) {
 	
@@ -42,10 +43,13 @@ void GamePlaying::OnEntry(void) {
 	//inicializar variables
 	foodcounter = 1;
 	score = 0;
-	nivel = 0; //lvl 1
+	saved_level, nivel = 0; //lvl 1
 	foodIncrement = m_leveldata.NumFoodIncr;
 	foodBase = m_leveldata.NumFoodInit;
 	time = m_leveldata.time;
+	percent, percent_2 = 0;
+	spawn_counter = SPAWN_TIME;
+	
 
 	//inicializar el mapa
 	cellData = new Cell*[m_leveldata.rows];
@@ -75,7 +79,7 @@ void GamePlaying::OnEntry(void) {
 void GamePlaying::OnExit(void) {
 	Println("-------------------------GAME OVER------------------------------");
 	Println("SCORE: ", s_snake->GetScore());
-	Println("NIVEL ALCANZADO: ", nivel);
+	Println("NIVEL ALCANZADO: ", (nivel+1));
 	Println("------------------------FELICIDADES!----------------------------");
 	delete s_snake;
 	delete f_food;
@@ -118,17 +122,28 @@ void GamePlaying::Update(void) {
 	}
 
 	//Comprobar si la serpiente sigue viva
-	if (s_snake->GetDead()) { //take out 1 live
+	if (s_snake->GetDead()) {
 		RestartLevel();
 	}
 		
 	//superar nivel
 	if (foodcounter > foodBase) {
 		Println("LVL UP!");
+		
 		nivel++;
+		//basic level parameter
 		foodcounter = 1;
 		foodBase = m_leveldata.NumFoodInit + foodIncrement * nivel;
 		time = m_leveldata.time;
+		saved_level = nivel;
+
+		//snake parameters
+		s_snake->_serpiente_saved = s_snake->_serpiente;
+		s_snake->SetBodySize_saved(s_snake->GetBodySize());
+		s_snake->SetDirection_saved(s_snake->GetDirection());
+		s_snake->SetLastDirection_saved(s_snake->GetLastDirection());
+		s_snake->SetLastPosition_saved(s_snake->GetLastPosition());
+		Println("Level Saved");
 	}
 
 	//Time manager
@@ -258,9 +273,17 @@ void GamePlaying::RestartLevel(void) {
 			}
 		}
 
+		
+		//basic level parameter
+		foodcounter = 1;
+		foodBase = m_leveldata.NumFoodInit + foodIncrement * nivel;
+		time = m_leveldata.time;
+		s_snake->SetDead(false);
+
+		if (nivel < 1) {
 			//restore initial parameters	
 			//s_snake->SetScore(0); //No me parece apropiado
-		//reiniciamos cuerpo
+			//reiniciamos cuerpo
 			s_snake->SetDirection(RIGHT);
 			s_snake->_serpiente[0] = Position{ 5,5 }; //cabeza
 			s_snake->_serpiente[1] = Position{ 5,4 };
@@ -268,15 +291,19 @@ void GamePlaying::RestartLevel(void) {
 			s_snake->_serpiente[3] = Position{ 5,2 }; //blanco
 			s_snake->SetBodySize(4);
 			s_snake->_serpiente.resize(4);
-			//s_snake->SetLastPosition({ 5,4 });
-
-			//restore initial parameters
-			time = m_leveldata.time;
-			foodcounter = 1;
-			//score = 0;
-			s_snake->SetDead(false);
+			
 			//aqui va velocidad inicial snake
 			s_snake->SetSpeed();
+		}
+		else {
+			s_snake->_serpiente = s_snake->_serpiente_saved;
+			s_snake->SetBodySize(s_snake->GetBodySize_saved());
+			s_snake->SetDirection(s_snake->GetDirection_saved());
+			s_snake->SetLastDirection(s_snake->GetLastDirection_saved());
+			s_snake->SetLastPosition(s_snake->GetLastPosition_saved());
+		}
+
+		nivel = saved_level;
 
 	}
 	else { //snake is dead

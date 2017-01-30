@@ -91,12 +91,12 @@ void Snake::Go(void) {
 	case DOWN:
 		if (CheckNeighbours()) {
 			for (int i = (_serpiente.size()-1); i > 0; i--) {
-				Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
+				//Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
 				_serpiente[i] = _serpiente[i - 1];
-				Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
+				//Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
 			}
 			_serpiente[0].x += 1;
-			Println("X: ", _serpiente[0].x, "Y: ", _serpiente[0].y);
+			//Println("X: ", _serpiente[0].x, "Y: ", _serpiente[0].y);
 		}
 		else {
 			Println("MUERTE");
@@ -107,13 +107,13 @@ void Snake::Go(void) {
 	case UP:
 		if (CheckNeighbours()) {
 			for (int i = (_serpiente.size() - 1); i > 0; i--) {
-				Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
+				//Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
 				_serpiente[i] = _serpiente[i - 1];
-				Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
+				//Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
 			}
 			_serpiente[0].x -= 1;
 			
-			Println("X: ", _serpiente[0].x, "Y: ", _serpiente[0].y);
+		//	Println("X: ", _serpiente[0].x, "Y: ", _serpiente[0].y);
 		}
 		else {
 			Println("MUERTE");
@@ -124,12 +124,12 @@ void Snake::Go(void) {
 	case LEFT:
 		if (CheckNeighbours()) {
 			for (int i = (_serpiente.size() - 1); i > 0; i--) {
-				Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
+				//Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
 				_serpiente[i] = _serpiente[i - 1];
-				Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
+				//Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
 			}
 			_serpiente[0].y -= 1;
-			Println("Cabeza: - X: ", _serpiente[0].x, "Y: ", _serpiente[0].y);
+			//Println("Cabeza: - X: ", _serpiente[0].x, "Y: ", _serpiente[0].y);
 		}
 		else {
 			Println("MUERTE");
@@ -140,12 +140,12 @@ void Snake::Go(void) {
 	case RIGHT:
 		if (CheckNeighbours()) {
 			for (int i = (_serpiente.size() - 1); i > 0; i--) {
-				Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
+				//Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
 				_serpiente[i] = _serpiente[i - 1];
-				Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
+				//Println(i, ": - X: ", _serpiente[i].x, "Y: ", _serpiente[i].y);
 			}
 			_serpiente[0].y += 1;
-			Println("X: ", _serpiente[0].x, "Y: ", _serpiente[0].y);
+			//Println("X: ", _serpiente[0].x, "Y: ", _serpiente[0].y);
 		}
 		else {
 			Println("MUERTE");
@@ -234,8 +234,24 @@ void Snake::SetLastPosition(Position pos) {
 	_lastPosition = pos;
 }
 
+void Snake::SetLastPosition_saved(Position pos) {
+	_lastPosition_saved = pos;
+}
+
 void Snake::SetDirection(Direction direction) {
 	_direction = direction;
+}
+
+void Snake::SetDirection_saved(Direction direction) {
+	_direction_saved = direction;
+}
+
+void Snake::SetLastDirection(Direction direction) {
+	_lastDirection = direction;
+}
+
+void Snake::SetLastDirection_saved(Direction direction) {
+	_lastDirection_saved = direction;
 }
 
 void Snake::SetScore(int score) {
@@ -254,6 +270,10 @@ void Snake::SetBodySize(int size) {
 	bodySize = size;
 }
 
+void Snake::SetBodySize_saved(int size) {
+	bodySize_saved= size;
+}
+
 void Snake::setGrow(bool _grow) {
 	grow = _grow;
 }
@@ -268,12 +288,20 @@ Direction Snake::GetDirection(void) {
 	return _direction;
 }
 
+Direction Snake::GetDirection_saved(void) {
+	return _direction_saved;
+}
+
 Position Snake::GetPosition(void) {
 	return _serpiente[0];
 }
 
 Position Snake::GetLastPosition(void) {
 	return _lastPosition;
+}
+
+Position Snake::GetLastPosition_saved(void) {
+	return _lastPosition_saved;
 }
 
 int Snake::GetScore(void) {
@@ -292,6 +320,18 @@ int Snake::GetBodySize(void) {
 	return bodySize;
 }
 
+int Snake::GetBodySize_saved(void) {
+	return bodySize_saved;
+}
+
 bool Snake::getGrow(void) {
 	return grow;
+}
+
+Direction Snake::GetLastDirection(void) {
+	return _lastDirection;
+}
+
+Direction Snake::GetLastDirection_saved(void) {
+	return _lastDirection_saved;
 }

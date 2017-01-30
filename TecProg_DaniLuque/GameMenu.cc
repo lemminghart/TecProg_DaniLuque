@@ -106,23 +106,26 @@ void GameMenu::Draw(void) {
 	m_background.Draw(); 
 	
 	if (menu) {
-		GUI::DrawTextShaded<FontID::ARIAL>("SNAKE",
+		/*GUI::DrawTextShaded<FontID::ARIAL>("SNAKE",
 		{ W.GetWidth() >> 1, int(W.GetHeight()*.1f), 1, 1 },
-		{ 0, 255, 0 }, { 0, 0, 0 });
+		{ 0, 255, 0 }, { 0, 0, 0 });*/
+		GUI::DrawTextBlended<FontID::ARIAL>("SNAKE",
+		{ int(W.GetWidth()*.4f), int(W.GetHeight()*.2f), 2, 2 },
+		{ 0, 255, 0 });
 		GUI::DrawTextBlended<FontID::ARIAL>("PLAY",
-		{ W.GetWidth() >> 1, int(W.GetHeight()*.6f), 1, 1 },
-		{ 115, 0, 180 });
+		{ int(W.GetWidth()*.5f), int(W.GetHeight()*.6f), 1, 1 },
+		{ 0, 0, 255 });
 		GUI::DrawTextBlended<FontID::ARIAL>("EXIT",
-		{ W.GetWidth() >> 1, int(W.GetHeight()*.8f), 1, 1 },
+		{ int(W.GetWidth()*.5f), int(W.GetHeight()*.8f), 1, 1 },
 		{ 255, 0, 0 });
 	}
 	else {
 		GUI::DrawTextBlended<FontID::ARIAL>("EASY",
 		{ W.GetWidth() >> 1, int(W.GetHeight()*.2f), 1, 1 },
-		{ 115, 0, 180 });
+		{ 178, 255, 102 });
 		GUI::DrawTextBlended<FontID::ARIAL>("MEDIUM",
 		{ W.GetWidth() >> 1, int(W.GetHeight()*.4f), 1, 1 },
-		{ 115, 0, 180 });
+		{ 204, 102, 0 });
 		GUI::DrawTextBlended<FontID::ARIAL>("HARD",
 		{ W.GetWidth() >> 1, int(W.GetHeight()*.6f), 1, 1 },
 		{ 115, 0, 180 });
